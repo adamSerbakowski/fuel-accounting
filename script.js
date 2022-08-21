@@ -33,7 +33,7 @@ function edit(field, id, tabela) {
 function sendEditForm () {
    // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
             $.ajax({
-                url         : "https://fructustransport.com/paliwo/update.php", 
+                url         : "/paliwo/update.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -71,7 +71,7 @@ function dodajZakup(ev) {
 
 function sendZakup() {
      $.ajax({
-                url         : "https://fructustransport.com/paliwo/dodaj-zakup.php", 
+                url         : "/paliwo/dodaj-zakup.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -99,7 +99,7 @@ function dodajWydanie(ev) {
 
 function sendWydanie() {
      $.ajax({
-                url         : "https://fructustransport.com/paliwo/dodaj-wydanie.php", 
+                url         : "/paliwo/dodaj-wydanie.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -128,7 +128,7 @@ function dodajTrasa(ev) {
 
 function sendTrasa() {
      $.ajax({
-                url         : "https://fructustransport.com/paliwo/dodaj-trasa.php", 
+                url         : "/paliwo/dodaj-trasa.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -159,7 +159,7 @@ function dodajKierowca(ev) {
 
 function sendKierowca() {
      $.ajax({
-                url         : "https://fructustransport.com/paliwo/dodaj-kierowca.php", 
+                url         : "/paliwo/dodaj-kierowca.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -180,7 +180,7 @@ function dodajSamochod(ev) {
 
 function sendSamochod() {
      $.ajax({
-                url         : "https://fructustransport.com/paliwo/dodaj-samochod.php", 
+                url         : "/paliwo/dodaj-samochod.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -245,7 +245,7 @@ function przypiszKier(field, id, tabela) {
 function sendPrzypiszForm () {
    // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
             $.ajax({
-                url         : "https://fructustransport.com/paliwo/update.php", 
+                url         : "/paliwo/update.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -270,7 +270,7 @@ function sendPrzypiszForm () {
 function sendPrzypiszFormKier () {
    // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
             $.ajax({
-                url         : "https://fructustransport.com/paliwo/update.php", 
+                url         : "/paliwo/update.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
@@ -307,7 +307,7 @@ function exitPrzypiszForm() {
 //    dostawcaFiltr = dostawca;
 //    console.log(dostawcaFiltr);
 //    $.ajax({
-//                url         : "https://fructustransport.com/paliwo/?dostawcaFiltr="+dostawcaFiltr, 
+//                url         : "/paliwo/?dostawcaFiltr="+dostawcaFiltr, 
 //                type      : "GET", 
 //                dataType    : 'json', 
 //                data        : { 
@@ -357,7 +357,7 @@ function dodajTrasaCala(ev) {
 
 function sendTrasaCala() {
      $.ajax({
-                url         : "https://fructustransport.com/paliwo/dodaj-cala-trasa.php", 
+                url         : "/paliwo/dodaj-cala-trasa.php", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
