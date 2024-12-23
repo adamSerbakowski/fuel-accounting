@@ -1,7 +1,7 @@
 <?php
  
-                        $getSamochody3 = "SELECT * FROM samochody";
-                        $samochody3 = $conn->query($getSamochody3);
+                        $getSamochody3 = "SELECT * FROM cars";
+                        $samochody3 = $db->query($getSamochody3);
 
                         
     foreach ($samochody3 as $row) : ?>
