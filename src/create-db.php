@@ -2,10 +2,15 @@
 
 //kierowcy
 // nazwisko, name
+// $db->query(
+//     "DROP TABLE `truck_drivers`"
+// );
 $db->query(
     "CREATE TABLE IF NOT EXISTS `truck_drivers` (
         `id` INTEGER,
         `name` TEXT,
+        `active` BOOLEAN DEFAULT TRUE,
+        `settlement_date` DATE DEFAULT NULL,
         PRIMARY KEY(`id` AUTOINCREMENT)
     )"
 );
@@ -16,6 +21,8 @@ $db->query(
 // ilosc_paliwa, fuel_qty
 // ilosc_adblue, adblue_qty
 // data, date
+// aktywny, active
+// data_rozliczenia, settlement_date
 $db->query(
     "CREATE TABLE IF NOT EXISTS `fuel_purchases` (
         `id` INTEGER,

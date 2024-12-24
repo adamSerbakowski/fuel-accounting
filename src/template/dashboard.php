@@ -1,3 +1,5 @@
+<?php include_once 'src/header.php'; ?>
+
 <div class="container-fluid" id="dashboard">
                             <div>
     Odśwież stronę aby zobaczyć aktualne dane.

@@ -153,25 +153,29 @@ function sendTrasa() {
 }
 
 function dodajKierowca(ev) {
+    
     ev.preventDefault();
     sendKierowca();
 }
 
 function sendKierowca() {
+    console.log($('#nazwisko').val());
      $.ajax({
-                url         : "/paliwo/dodaj-kierowca.php", 
+                url         : "/dataUpdate/dodaj-kierowca", 
                 type      : "POST", 
                 dataType    : 'json', 
                 data        : { 
                     nazwisko: $('#nazwisko').val()
                 }})
-                .done(function() {
-                    nazwisko: '';
-            location.reload();
-                }); 
+                // .done(function() {
+                //     nazwisko: '';
+                //     location.reload();
+                // }); 
 }
 
-
+$(document).ajaxStop(function(){
+    window.location.reload();
+});
 
 function dodajSamochod(ev) {
     ev.preventDefault();
