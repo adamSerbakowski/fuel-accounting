@@ -43,18 +43,18 @@ class CarsController extends Controller
         foreach ($samochody3 as $row) :
            $html .= "<div class='row'>
                 <span>
-                    {$row['id_samochod']}
+                    {$row['id']}
                 </span>
-                     <span data-field='nr_rejestracyjny' data-id='{$row['id_samochod']}' 
-                           onclick='edit(`nr_rejestracyjny`,`{$row['id_samochod']}`,`samochody`)'
-                           >{$row['nr_rejestracyjny']}</span>
+                     <span data-field='nr_rejestracyjny' data-id='{$row['id']}' 
+                           onclick='edit(`nr_rejestracyjny`,`{$row['id']}`,`samochody`)'
+                           >{$row['registration_nb']}</span>
 
-                <span data-field='bak_paliwo' data-id='{$row['id_samochod']}' 
-                           onclick='edit(`bak_paliwo`,`{$row['id_samochod']}`,`samochody`)'
-                    >{$row['bak_paliwo']}</span>
-                <span data-field='bak_adblue' data-id='{$row['id_samochod']}' 
-                           onclick='edit(`bak_adblue`,`{$row['id_samochod']}`,`samochody`)'
-                    >{$row['bak_adblue']}</span>
+                <span data-field='bak_paliwo' data-id='{$row['id']}' 
+                           onclick='edit(`bak_paliwo`,`{$row['id']}`,`samochody`)'
+                    >{$row['fuel_tank']}</span>
+                <span data-field='bak_adblue' data-id='{$row['id']}' 
+                           onclick='edit(`bak_adblue`,`{$row['id']}`,`samochody`)'
+                    >{$row['adblue_tank']}</span>
             </div>";
         endforeach;
 

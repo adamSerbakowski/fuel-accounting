@@ -1,3 +1,7 @@
+$(document).ajaxStop(function(){
+    window.location.reload();
+});
+
 function submitEdit(ev) {
     ev.preventDefault();
     
@@ -159,23 +163,16 @@ function dodajKierowca(ev) {
 }
 
 function sendKierowca() {
-    console.log($('#nazwisko').val());
+    // add validation error message
      $.ajax({
-                url         : "/dataUpdate/dodaj-kierowca", 
-                type      : "POST", 
-                dataType    : 'json', 
-                data        : { 
-                    nazwisko: $('#nazwisko').val()
-                }})
-                // .done(function() {
-                //     nazwisko: '';
-                //     location.reload();
-                // }); 
+        url         : "/dataUpdate", 
+        type      : "POST", 
+        dataType    : 'json', 
+        data        : {
+            type: 'addDriver',
+            nazwisko: $('#nazwisko').val()
+        }})
 }
-
-$(document).ajaxStop(function(){
-    window.location.reload();
-});
 
 function dodajSamochod(ev) {
     ev.preventDefault();
@@ -183,21 +180,17 @@ function dodajSamochod(ev) {
 }
 
 function sendSamochod() {
+    // add validation error message
      $.ajax({
-                url         : "/paliwo/dodaj-samochod.php", 
-                type      : "POST", 
-                dataType    : 'json', 
-                data        : { 
-                    nr_rejestracyjny: $('#nr_rejestracyjny').val(),
-                    bak_paliwo: $('#bak_paliwo').val(),
-                    bak_adblue: $('#bak_adblue').val()
-                }})
-                .done(function() {
-                    nr_rejestracyjny: '';
-                    bak_paliwo: '';
-                    bak_adblue: '';
-            location.reload();
-                }); 
+        url         : "/dataUpdate", 
+        type      : "POST", 
+        dataType    : 'json', 
+        data        : {
+            type: 'addCar',
+            nr_rejestracyjny: $('#nr_rejestracyjny').val(),
+            bak_paliwo: $('#bak_paliwo').val(),
+            bak_adblue: $('#bak_adblue').val()
+        }})
 }
 
 // PRZYPISYWANIE

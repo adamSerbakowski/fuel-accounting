@@ -9,7 +9,7 @@ abstract class Controller
     protected \PDO $db;
 
     public function renderTemplate() {
-        $this->db = new \PDO('sqlite:fuel.db');
+        $this->db = DB::getInstance();
         return $this->renderHeader() . $this->renderContent() . $this->renderFooter();
     }
 
@@ -120,8 +120,8 @@ abstract class Controller
         $samochody = $this->db->query($getSamochody);
         $html = '';
         foreach ($samochody as $row) :
-            $idSamochod = $row['id_samochod'];
-            $nrRej = $row['nr_rejestracyjny'];
+            $idSamochod = $row['id'];
+            $nrRej = $row['registration_nb'];
             $html .= "<option data-id='{}' value='{$idSamochod}'>{$nrRej}</option>";
         endforeach;
 

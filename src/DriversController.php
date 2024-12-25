@@ -25,10 +25,10 @@ class DriversController extends Controller
                             <input type="submit" value="DODAJ">
                             <input type="text" id="nazwisko" name="nazwisko">
                         </form>
-                    </div>'.$this->renderKierowcy().'</div></div>';
+                    </div>'.$this->renderDrivers().'</div></div>';
     }
 
-    private function renderKierowcy()
+    private function renderDrivers()
     {
         $kierowcy = $this->db->query("SELECT * FROM truck_drivers;");
 
