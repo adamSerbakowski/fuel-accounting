@@ -8,6 +8,8 @@ use App\UpdateService;
 
 class Router
 {
+
+
     public function resolveRequest(string $request)
     {
         $templates = '/src/';
@@ -29,7 +31,7 @@ class Router
             case '/trasy':
                 require __DIR__ . $templates . 'trasy.php';
                 break;
-            case '/dataUpdate';
+            case '/dataUpdate':
                 return (new UpdateService())->add($_POST);
                 break;
             default:

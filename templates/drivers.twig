@@ -1,0 +1,35 @@
+{% extends "base.twig" %}
+
+{% block content %}
+    <div class="kierowcy">
+        <div>
+            Odśwież stronę aby zobaczyć aktualne dane.
+        </div>
+        <h2>Kierowcy</h2>
+        <div class="tabela col-12">
+        <div class="row table-head">
+            <span>ID</span>
+            <span>Nazwisko</span>
+            <span>Aktywny</span>
+            <span>Data ostatniego rozliczenia</span>
+        </div>
+        <div class="row dodaj-kierowca">
+            <form onsubmit="dodajKierowca(event)">
+                <input type="submit" value="DODAJ">
+                <input type="text" id="nazwisko" name="nazwisko">
+            </form>
+        </div>
+        
+        {% for driver in content.activeDrivers %}
+            {% include '/partials/driver.twig' with {'driver': driver} %}
+        {% endfor %}
+
+        <p>Kierowcy archiwalni</p>
+
+        {% for row in content.archivedDrivers %}
+            {% include '/partials/driver.twig' with {'driver': driver} %}
+        {% endfor %}
+        
+        </div>
+    </div>
+{% endblock %}

@@ -5,21 +5,21 @@ $(document).ajaxStop(function(){
 function submitEdit(ev) {
     ev.preventDefault();
     
-    if (ev.key === "Enter") {
-        if ($('#var').val()!== "") {
+    if (ev.key === 'Enter') {
+        if ($('#var').val()!== '') {
             sendEditForm();
         }
     }
 }
         
-var fieldToEdit = "";
+var fieldToEdit = '';
 var idToEdit = '';
 var napToEdit = '';
 
 function edit(field, id, tabela) {
     $('#editPopUp').css('display','block');
-    $('.popup__header').text("Edycja "+field);
-    var fieldVal = $('span[data-field="'+field+'"][data-id="'+id+'"]').text();
+    $('.popup__header').text('Edycja '+field);
+    var fieldVal = $(`span[data-field=''+field+''][data-id=''+id+'']`).text();
     if (fieldVal === '') {
         $('#var').attr('placeholder', 'Wprowadź nowy '+field);
     } else {
@@ -37,8 +37,8 @@ function edit(field, id, tabela) {
 function sendEditForm () {
    // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
             $.ajax({
-                url         : "/paliwo/update.php", 
-                type      : "POST", 
+                url         : '/paliwo/update.php', 
+                type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
                     id: idToEdit,
@@ -48,12 +48,12 @@ function sendEditForm () {
                 }})
                 .done(function(res) {
                     if (res.code === 1) {
-                        fieldToEdit = "";
+                        fieldToEdit = '';
                         idToEdit = '';
                         location.reload();
             
                     } else {
-                        console.error("błąd połączenia");
+                        console.error('błąd połączenia');
                     }
                 }); 
 
@@ -61,7 +61,7 @@ function sendEditForm () {
 }
 function exitEditForm() {
     $('#editPopUp').css('display','none');
-    fieldToEdit = "";
+    fieldToEdit = '';
     idToEdit = '';
     $('#var').val('');
 }
@@ -75,8 +75,8 @@ function dodajZakup(ev) {
 
 function sendZakup() {
      $.ajax({
-                url         : "/paliwo/dodaj-zakup.php", 
-                type      : "POST", 
+                url         : '/paliwo/dodaj-zakup.php', 
+                type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
                     dostawca: $('#dostawca').val(),
@@ -103,8 +103,8 @@ function dodajWydanie(ev) {
 
 function sendWydanie() {
      $.ajax({
-                url         : "/paliwo/dodaj-wydanie.php", 
-                type      : "POST", 
+                url         : '/paliwo/dodaj-wydanie.php', 
+                type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
                     samochod: $('#samochod').val(),
@@ -132,8 +132,8 @@ function dodajTrasa(ev) {
 
 function sendTrasa() {
      $.ajax({
-                url         : "/paliwo/dodaj-trasa.php", 
-                type      : "POST", 
+                url         : '/paliwo/dodaj-trasa.php', 
+                type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
                     samochod: $('#samochod').val(),
@@ -165,8 +165,8 @@ function dodajKierowca(ev) {
 function sendKierowca() {
     // add validation error message
      $.ajax({
-        url         : "/dataUpdate", 
-        type      : "POST", 
+        url         : '/dataUpdate', 
+        type      : 'POST', 
         dataType    : 'json', 
         data        : {
             type: 'addDriver',
@@ -182,8 +182,8 @@ function dodajSamochod(ev) {
 function sendSamochod() {
     // add validation error message
      $.ajax({
-        url         : "/dataUpdate", 
-        type      : "POST", 
+        url         : '/dataUpdate', 
+        type      : 'POST', 
         dataType    : 'json', 
         data        : {
             type: 'addCar',
@@ -198,21 +198,21 @@ function sendSamochod() {
 function submitPrzypisz(ev) {
     ev.preventDefault();
     
-    if (ev.key === "Enter") {
-        if ($('#varP').val()!== "" || $('#varK').val()!== "" ) {
+    if (ev.key === 'Enter') {
+        if ($('#varP').val()!== '' || $('#varK').val()!== '' ) {
             sendPrzypiszForm();
         }
 
     }
 }
         
-var fieldToEdit = "";
+var fieldToEdit = '';
 var idToEdit = '';
 var napToEdit = '';
 
 function przypisz(field, id, tabela) {
     $('#przypiszPopUp').css('display','block');
-    var fieldVal = $('span[data-field="'+field+'"][data-id="'+id+'"][data-tab="'+tabela+'"]').text();
+    var fieldVal = $(`span[data-field=''+field+''][data-id=''+id+''][data-tab=''+tabela+'']`).text();
     if (fieldVal === '') {
         $('#varP').attr('placeholder', 'Wprowadź nowy '+field);
     } else {
@@ -226,7 +226,7 @@ function przypisz(field, id, tabela) {
 }
 function przypiszKier(field, id, tabela) {
     $('#przypiszKierPopUp').css('display','block');
-    var fieldVal = $('span[data-field="'+field+'"][data-id="'+id+'"][data-tab="'+tabela+'"]').text();
+    var fieldVal = $(`span[data-field=''+field+''][data-id=''+id+''][data-tab=''+tabela+'']`).text();
     if (fieldVal === '') {
         $('#varK').attr('placeholder', 'Wprowadź nowy '+field);
     } else {
@@ -242,8 +242,8 @@ function przypiszKier(field, id, tabela) {
 function sendPrzypiszForm () {
    // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
             $.ajax({
-                url         : "/paliwo/update.php", 
-                type      : "POST", 
+                url         : '/paliwo/update.php', 
+                type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
                     id: idToEdit,
@@ -253,12 +253,12 @@ function sendPrzypiszForm () {
                 }})
                 .done(function(res) {
                     if (res.code === 1) {
-                        fieldToEdit = "";
+                        fieldToEdit = '';
                         idToEdit = '';
                         location.reload();
             
                     } else {
-                        console.error("błąd połączenia");
+                        console.error('błąd połączenia');
                     }
                 }); 
 
@@ -267,8 +267,8 @@ function sendPrzypiszForm () {
 function sendPrzypiszFormKier () {
    // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
             $.ajax({
-                url         : "/paliwo/update.php", 
-                type      : "POST", 
+                url         : '/paliwo/update.php', 
+                type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
                     id: idToEdit,
@@ -278,12 +278,12 @@ function sendPrzypiszFormKier () {
                 }})
                 .done(function(res) {
                     if (res.code === 1) {
-                        fieldToEdit = "";
+                        fieldToEdit = '';
                         idToEdit = '';
                         location.reload();
             
                     } else {
-                        console.error("błąd połączenia");
+                        console.error('błąd połączenia');
                     }
                 }); 
 
@@ -292,7 +292,7 @@ function sendPrzypiszFormKier () {
 function exitPrzypiszForm() {
     $('#przypiszPopUp').css('display','none');
     $('#przypiszKierPopUp').css('display','none');
-    fieldToEdit = "";
+    fieldToEdit = '';
     idToEdit = '';
     $('#varP').val('');
     $('#varK').val('');
@@ -304,8 +304,8 @@ function exitPrzypiszForm() {
 //    dostawcaFiltr = dostawca;
 //    console.log(dostawcaFiltr);
 //    $.ajax({
-//                url         : "/paliwo/?dostawcaFiltr="+dostawcaFiltr, 
-//                type      : "GET", 
+//                url         : '/paliwo/?dostawcaFiltr='+dostawcaFiltr, 
+//                type      : 'GET', 
 //                dataType    : 'json', 
 //                data        : { 
 //                    dostawcaFiltr: dostawcaFiltr
@@ -319,8 +319,8 @@ function exitPrzypiszForm() {
 function filtrujZakupy () {
     
                 $.ajax({
-                url         : "/", 
-                type      : "GET", 
+                url         : '/', 
+                type      : 'GET', 
                 dataType    : 'json', 
                 data        : { 
                     dataPoczatek: $('#zakupPoczatek').val(),
@@ -334,8 +334,8 @@ function filtrujZakupy () {
 function filtrujWydania () {
     
                 $.ajax({
-                url         : "/", 
-                type      : "GET", 
+                url         : '/', 
+                type      : 'GET', 
                 dataType    : 'json', 
                 data        : { 
                     wdataPoczatek: $('#wydaniePoczatek').val(),
@@ -354,8 +354,8 @@ function dodajTrasaCala(ev) {
 
 function sendTrasaCala() {
      $.ajax({
-                url         : "/paliwo/dodaj-cala-trasa.php", 
-                type      : "POST", 
+                url         : '/paliwo/dodaj-cala-trasa.php', 
+                type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
                     samochod: $('#samochod').val(),

@@ -1,3 +1,3 @@
 <?php
 
-// echo 'there is nothing here';
+echo 'there is nothing here';

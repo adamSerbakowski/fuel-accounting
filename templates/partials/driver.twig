@@ -1,0 +1,14 @@
+<div class='row'>
+    <span>
+        {{ driver.id }}
+    </span>
+    <span data-field='nazwisko' data-id='{{ driver.id }}' onclick='edit(`nazwisko`,`{{ driver.id }}`,`kierowcy`)'>
+        {{ driver.name }}
+    </span>
+    <span data-field='aktywny' data-id='{{ driver.id }}' onclick='edit(`aktywny`,`{{ driver.id }}`,`kierowcy`)'>
+        {{ driver.active }}
+    </span>
+    <span data-field='data_rozliczenia' data-id='{{ driver.id }}' onclick='edit(`data_rozliczenia`,`{{ driver.id }}`,`kierowcy`)'>
+        {{ driver.settlement_date}}
+    </span>
+</div>
