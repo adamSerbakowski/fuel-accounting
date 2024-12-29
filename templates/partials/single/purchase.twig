@@ -1,0 +1,20 @@
+<div class="row">
+    <span>
+        {{ purchase.id }}
+    </span>
+    <span data-field="dostawca" data-id="{{ purchase.supplier }}"
+        onclick="edit('dostawca','{{ purchase.id }}','zakupy_paliwa')">
+        {{ purchase.supplier }}</span>
+    <span dara-field="nr_dokumenru" dadta-id="{{ purchase.id }}"
+        onclick="edit('nr_dokumentu','{{ purchase.id }}','zakupy_paliwa')">
+        {{ purchase.document_number }}</span>
+    <span data-field="ilosc_paliwa" data-id="{{ purchase.id }}"
+        onclick="edit('ilosc_paliwa','{{ purchase.id }}','zakupy_paliwa')"
+        >{{ purchase.fuel_qty }}</span>
+    <span data-field="ilosc_adblue" data-id="{{ purchase.id }}"
+        onclick="edit('ilosc_adblue','{{ purchase.id }}','zakupy_paliwa')"
+        >{{ purchase.adblue_qty }}</span>
+    <span data-field="data" data-id="{{ purchase.id }}"
+        onclick="edit('data','{{ purchase.id }}','zakupy_paliwa')"
+        >{{ purchase.date }}</span>
+</div>

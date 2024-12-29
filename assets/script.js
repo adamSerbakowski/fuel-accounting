@@ -75,25 +75,17 @@ function dodajZakup(ev) {
 
 function sendZakup() {
      $.ajax({
-                url         : '/paliwo/dodaj-zakup.php', 
+                url         : '/dataUpdate', 
                 type      : 'POST', 
                 dataType    : 'json', 
                 data        : { 
+                    type: 'addPurchase',
                     dostawca: $('#dostawca').val(),
                     nr_dokumentu: $('#nr_dokumentu').val(),
                     ilosc_paliwa: $('#ilosc_paliwa').val(),
                     ilosc_adblue: $('#ilosc_adblue').val(),
                     data_zakupu: $('#data_zakupu').val()
                 }})
-                .done(function(res) {
-                        dostawca: '';
-                nr_dokumentu: '';
-                    ilosc_paliwa: '';
-                    ilosc_adblue: '';
-                    data_zakupu: '';
-                        location.reload();
-                }); 
-    
 }
 
 function dodajWydanie(ev) {
@@ -103,26 +95,19 @@ function dodajWydanie(ev) {
 
 function sendWydanie() {
      $.ajax({
-                url         : '/paliwo/dodaj-wydanie.php', 
-                type      : 'POST', 
-                dataType    : 'json', 
-                data        : { 
-                    samochod: $('#samochod').val(),
-                    w_ilosc_paliwa: $('#w_ilosc_paliwa').val(),
-                    w_ilosc_adblue: $('#w_ilosc_adblue').val(),
-                    w_ilosc_ref: $('#w_ilosc_ref').val(),
-                    data_wydania: $('#data_wydania').val(),
-                    rodzaj: $('#rodzaj').val()
-                }})
-                .done(function(res2) {
-                    samochod: '';
-            w_ilosc_paliwa: '';
-            w_ilosc_adblue: '';
-            w_ilosc_ref: '';
-            data_wydania: '';
-            rodzaj: '';
-            location.reload();
-                }); 
+        url : '/dataUpdate', 
+        type : 'POST', 
+        dataType : 'json', 
+        data : {
+            type: 'addRelease',
+            samochod: $('#samochod').val(),
+            w_ilosc_paliwa: $('#w_ilosc_paliwa').val(),
+            w_ilosc_adblue: $('#w_ilosc_adblue').val(),
+            w_ilosc_ref: $('#w_ilosc_ref').val(),
+            data_wydania: $('#data_wydania').val(),
+            rodzaj: $('#rodzaj').val()
+        }
+    })
 }
 
 function dodajTrasa(ev) {
@@ -132,28 +117,20 @@ function dodajTrasa(ev) {
 
 function sendTrasa() {
      $.ajax({
-                url         : '/paliwo/dodaj-trasa.php', 
-                type      : 'POST', 
-                dataType    : 'json', 
-                data        : { 
-                    samochod: $('#samochod').val(),
-                    kierowca: $('#kierowca').val(),
-                    data_poczatek: $('#data_poczatek').val(),
-                    data_koniec: $('#data_koniec').val(),
-                    przejechane_kilometry: $('#przejechane_kilometry').val(),
-                     poprawne_kilometry: $('#poprawne_kilometry').val(),
-                    poprawne_spalanie: $('#poprawne_spalanie').val()
-                }})
-                .done(function(res2) {
-                    samochod: '';
-            kierowca: '';
-                    data_poczatek: '';
-                    data_koniec: '';
-                    przejechane_kilometry: '';
-                    poprawne_kilometry: '';
-                    poprawne_spalanie: '';
-            location.reload();
-                }); 
+        url : '/dataUpdate', 
+        type : 'POST', 
+        dataType : 'json', 
+        data : {
+            type: 'addDelivery',
+            samochod: $('#samochod').val(),
+            kierowca: $('#kierowca').val(),
+            data_poczatek: $('#data_poczatek').val(),
+            data_koniec: $('#data_koniec').val(),
+            przejechane_kilometry: $('#przejechane_kilometry').val(),
+            poprawne_kilometry: $('#poprawne_kilometry').val(),
+            poprawne_spalanie: $('#poprawne_spalanie').val()
+        }
+    })
 }
 
 function dodajKierowca(ev) {

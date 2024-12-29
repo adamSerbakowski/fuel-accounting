@@ -2,17 +2,13 @@
 
 namespace App;
 
-use App\Controller;
 use App\DriversController;
 use App\UpdateService;
 
 class Router
 {
-
-
     public function resolveRequest(string $request)
     {
-        $templates = '/src/';
         switch ($request) {
             case '':
             case '/':
@@ -26,16 +22,14 @@ class Router
                 // ADD GET PARAMS HANDLING or replace function
                 return (new ReleasesController())->renderTemplate();
             case '/zakupy':
-                require __DIR__ . $templates . 'zakupy.php';
-                break;
+                // ADD GET PARAMS HANDLING or replace function
+                return (new PurchasesController())->renderTemplate();
             case '/trasy':
-                require __DIR__ . $templates . 'trasy.php';
-                break;
+                return (new DeliveriesController())->renderTemplate();
             case '/dataUpdate':
                 return (new UpdateService())->add($_POST);
-                break;
             default:
-                require __DIR__ . '/template/404.php';
+                require __DIR__ . '/404.php';
         }
     }
 }

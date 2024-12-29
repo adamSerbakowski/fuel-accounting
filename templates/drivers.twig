@@ -21,13 +21,13 @@
         </div>
         
         {% for driver in content.activeDrivers %}
-            {% include '/partials/driver.twig' with {'driver': driver} %}
+            {% include '/partials/single/driver.twig' with {'driver': driver} %}
         {% endfor %}
 
         <p>Kierowcy archiwalni</p>
 
         {% for row in content.archivedDrivers %}
-            {% include '/partials/driver.twig' with {'driver': driver} %}
+            {% include '/partials/single/driver.twig' with {'driver': driver} %}
         {% endfor %}
         
         </div>

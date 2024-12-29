@@ -1,0 +1,129 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="col-12 col-md-12">
+    <div>
+    Odśwież stronę aby zobaczyć aktualne dane.
+    </div>
+    <div class="wydania">
+        <h2>Tankowania paliwa</h2>
+        <div class="row filtr filtr-wydanie">
+            <div class="col-3">
+                <form onsubmit="filtrujWydania">
+                    <p id="wybranySamochod">Filtruj po samochodzie</p>
+                    <input id="samochodFi" name="samochodFiltr" list="samochodF" placeholder="Wybierz z listy">
+                    <datalist id="samochodF">'.$this->getSamochodyWydania().'
+                        {% for car in releaseCars %}
+                            <option value='{{ car.carId }}'>{{ car.registrationNb }}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="col-3">
+                    <p>Ustaw początek zakresu</p>
+                    <input type="date" id="wydaniePoczatek" name="wydaniePoczatek">
+                </div>
+                <div class="col-3">
+                    <p>Ustaw koniec zakresu</p>
+                    <input type="date" id="wydanieKoniec" name="wydanieKoniec">
+                </div>
+                <div class="col-3">
+                    <input type="submit" value="Filtruj">
+                </div>
+            </form>
+
+            <a href="{{ url }}">Wyczyść Filtry</a>
+        </div>
+        <div class="tabela col-12">
+            <div class="row table-head">
+                <span>ID</span>
+                <span>Samochód</span>
+                <span>Ilość paliwa</span>
+                <span>Ilość adblue</span>
+                <span>Ilość REF</span>
+                <span>Data</span>
+                <span>Miejsce wydania</span>
+            </div>
+            <div class="row dodaj-wydanie">
+                <form onsubmit="dodajWydanie(event)">
+                    <input type="submit" value="DODAJ">
+                    <input id="samochod" name="samochod" list="numeryrej" placeholder="Wybierz z listy">
+                    <datalist id="numeryrej">
+                        {% for car in cars %}
+                            <option data-id='{{ car.id }}' value='{{ car.id }}'>{{ car.nb }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <input type="text" id="w_ilosc_paliwa" name="w_ilosc_paliwa" placeholder="Wpisz ilość paliwa">
+                    <input type="text" id="w_ilosc_adblue" name="w_ilosc_adblue" placeholder="Wpisz ilość adblue">
+                    <input type="text" id="w_ilosc_ref" name="w_ilosc_ref" placeholder="Wpisz ilość REF">
+                    <input type="date" id="data_wydania" name="data_wydania" placeholder="Wybierz datę">
+                    <input type="text" id="rodzaj" name="rodzaj" placeholder="Baza czy trasa" list="rodzaje">
+                    <datalist id="rodzaje">
+                        <option value="baza">baza</option>
+                        <option value="E100">E100</option>
+                        <option value="inne">inne</option>
+                    </datalist>
+                </form>
+            </div>
+
+            {% if content.wydaniePoczatek or content.samochodFiltr or content.wydanieKoniec %}
+                <div class='row'>
+                    <div class='col-4'>
+                        Aktywne filtry:<br>";
+                        {% if content.samochodFiltr %}
+                            Samochód:
+                            {{ content.samochodFiltr }}
+                            <br>
+                        {% endif %}
+                    </div>
+                    <div class='col-4'>";
+                        {% if content.wydaniePoczatek %}
+                            Data początkowa:
+                            {{ content.wydaniePoczatek }}
+                            <br>
+                        {% endif %}
+                    </div>
+                    <div class='col-4'>";
+                        {% if content.wydanieKoniec %}
+                            Data końcowa:
+                            {{ content.wydanieKoniec }}
+                            <br>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for release in content.releases %}
+            <div class='row'>
+                <span>
+                    {{ release.id }}
+                </span>
+                <span data-field='id_samochod' data-id='{{ release.id }}' data-tab='wydania_paliwa' 
+                    onclick='przypisz(`id_samochod`,`{{ release.id }}`,`wydania_paliwa`)'>
+                    {{ release.registration_nb }}
+                </span>
+                <span data-field='w_ilosc_paliwa' data-id='{{ release.id }}'
+                    onclick='edit(`w_ilosc_paliwa`,`{{ release.id }}`,`wydania_paliwa`)'
+                    >{{ release.released_fuel_qty }}</span>
+                <span data-field='w_ilosc_adblue' data-id='{{ release.id }}'
+                    onclick='edit(`w_ilosc_adblue`,`{{ release.id }}`,`wydania_paliwa`)'
+                    >{{ release.released_adblue_qty }}</span>
+                <span data-field='w_ilosc_ref' data-id='{{ release.id }}'
+                    onclick='edit(`w_ilosc_ref`,`{{ release.id }}`,`wydania_paliwa`)'
+                    >{{ release.released_ref_qty }}</span>
+                <span data-field='data_wydania' data-id='{{ release.id }}'
+                    onclick='edit(`data_wydania`,`{{ release.id }}`,`wydania_paliwa`)'
+                    >{{ release.date }}</span>
+                <span data-field='rodzaj' data-id='{{ release.id }}'
+                    onclick='edit(`rodzaj`,`{{ release.id }}`,`wydania_paliwa`)'
+                    >{{ release.type }}</span>
+                </div>
+            {% endfor %}
+            <div class='row suma'>
+                <span>Liczba wydań: {{ liczbaWydan }}</span>
+                <span>Ilość paliwa w sumie: {{ wSumieWydanePaliwo }}</span>
+                <span>Ilość adBlue w sumie: {{ wSumieWydaneAdblue }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

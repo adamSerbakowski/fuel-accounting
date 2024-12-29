@@ -3,14 +3,20 @@
 namespace App;
 
 use Twig\Environment;
+use App\Repositories\DriversRepository;
+use App\Repositories\CarsRepository;
 
 abstract class Controller
 {
+    public const URL = '';
+
     protected \PDO $db;
 
     protected Environment $twig;
 
     protected DriversRepository $driversRepository;
+
+    protected CarsRepository $carsRepository;
 
     public function __construct()
     {
@@ -20,6 +26,7 @@ abstract class Controller
             // 'cache' => './cache',
         ]);
         $this->driversRepository = new DriversRepository($this->db);
+        $this->carsRepository = new CarsRepository($this->db);
     }
 
     public function renderTemplate() {
@@ -28,14 +35,15 @@ abstract class Controller
             [
                 'scripts' => $this->getScripts(),
                 'styles' => $this->getStyles(),
-                'cars' => $this->getCars(),
+                'url' => static::URL,
+                'cars' => $this->carsRepository->getAllShortened(),
                 'drivers' => $this->driversRepository->getAll(),
-                'content' => $this->getContent()
+                'content' => $this->getContent(),
             ]
         );
     }
 
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return 'base.twig';
     }
@@ -50,17 +58,5 @@ abstract class Controller
     private function getStyles(): string
     {
         return file_get_contents("assets/style.css");
-    }
-
-    private function getCars()
-    {
-        $getSamochody = "SELECT * FROM cars";
-        $samochody = $this->db->query($getSamochody);
-        $list = [];
-        foreach ($samochody as $row) :
-            $list[] = ['id' => $row['id'], 'nb' => $row['registration_nb']];
-        endforeach;
-
-        return $list;
     }
 }

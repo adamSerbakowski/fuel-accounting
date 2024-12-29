@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="col-12 col-md-12">
+    <div>
+        Odśwież stronę aby zobaczyć aktualne dane.
+    </div>
+        <div class="samochody">
+            <h2>Samochody</h2>
+        <div class="tabela col-12">
+            <div class="row table-head">
+                <span>ID</span>
+                <span>Nr rejestracyjny</span>
+                <span>Wielkość zbiornika paliwa</span>
+                <span>Wielkość zbiornika adblue</span>
+            </div>
+            <div class="row dodaj-samochod">
+                <form onsubmit="dodajSamochod(event)">
+                    <input type="submit" value="DODAJ">
+                    <input type="text" id="nr_rejestracyjny" name="nazwisko">
+                    <input type="text" id="bak_paliwo" name="nazwisko">
+                    <input type="text" id="bak_adblue" name="nazwisko">
+                </form>
+            </div>
+            <div class='row'>
+
+            {% for car in content.cars %}
+                <span>
+                    {{ car.id }}
+                </span>
+                <span data-field='nr_rejestracyjny' data-id='{{ car.id }}' 
+                    onclick='edit(`nr_rejestracyjny`,`{{ car.id }}`,`samochody`)'
+                    >{{ car.registration_nb }}</span>
+                <span data-field='bak_paliwo' data-id='{{ car.id }}' 
+                        onclick='edit(`bak_paliwo`,`{{ car.id }}`,`samochody`)'
+                    >{{ car.fuel_tank }}</span>
+                <span data-field='bak_adblue' data-id='{{ car.id }}' 
+                        onclick='edit(`bak_adblue`,`{{ car.id }}`,`samochody`)'
+                    >{{ car.adblue_tank }}</span>
+            {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

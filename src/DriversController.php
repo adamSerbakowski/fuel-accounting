@@ -6,7 +6,7 @@ use App\Controller;
 
 class DriversController extends Controller
 {
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return 'drivers.twig';
     }

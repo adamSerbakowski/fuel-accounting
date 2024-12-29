@@ -1,0 +1,94 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="col-12 col-md-12">
+	<div>
+		Odśwież stronę aby zobaczyć aktualne dane.
+	</div>
+	<div class="trasy">
+		<h2>Trasy</h2>
+		<div class="tabela col-12">
+			<div class="row table-head">
+				<span>ID</span>
+				<span>Samochód</span>
+				<span>Kierowca</span>
+				<span>Data początkowa</span>
+				<span>Data końcowa</span>
+				<span>Przejechane kilometry kierowcy</span>
+				<span>Paliwo kierowca</span>
+				<span>Kilometry system</span>
+				<span>Paliwo system</span>
+				<span>Spalanie l/100km kierowcy</span>
+				<span>Spalanie l/100km system</span>
+				<span>Różnica (l)</span>
+			</div>
+
+			<div class="row dodaj-trasa">
+				<form onsubmit="dodajTrasa(event)">
+					<input type="submit" value="DODAJ">
+					<input id="samochod" name="samochod" list="numeryrej" placeholder="Wybierz z listy">
+					<datalist id="numeryrej">
+						{% for car in cars %}
+							<option data-id='{{ car.id }}' value='{{ car.id }}'>{{ car.nb }}</option>
+						{% endfor %}
+					</datalist>
+					<input type="text" id="kierowca" name="kierowca" list="trasakierowca">
+					<datalist id="trasakierowca">
+
+						{% for driver in drivers %}
+							<option data-id='{{ driver.id }}' value='{{ driver.id }}'>{{ driver.name }}</option>
+						{% endfor %}
+					</datalist>
+					<input type="date" id="data_poczatek" name="data_poczatek">
+					<input type="date" id="data_koniec" name="data_koniec">
+					<input type="text" id="przejechane_kilometry" name="przejechane_kilometry">
+					<input disabled></input>
+				<input type="text" id="poprawne_kilometry" name="poprawne_kilometry">
+				<input type="text" id="poprawne_spalanie" name="poprawne_spalanie">
+                </form>
+            </div>
+
+            {% for delivery in content.deliveries%}
+		        <div class="row">
+                    <span>
+                        {{ delivery.id }}
+                    </span>
+                    <span data-field="id_samochod" data-id="{{ delivery.id }}" data-tab="trasy" onclick="przypisz('id_samochod','{{ delivery.id }}','trasy')">{{ delivery.registration_nb }}</span>
+                    <span data-field="id_kierowca" data-id="{{ delivery.id }}" data-tab="trasy" 
+                            onclick="przypiszKier('id_kierowca','{{ delivery.id }}','trasy')">{{ delivery.name }}</span>
+                    <span data-field="data_poczatek" data-id="{{ delivery.id }}"
+                            onclick="edit('data_poczatek','{{ delivery.id }}','trasy')"
+                            >{{ delivery.start_date }}</span>
+                    <span data-field="data_koniec" data-id="{{ delivery.id }}"
+                            onclick="edit('data_koniec','{{ delivery.id }}','trasy')"
+                            >{{ delivery.end_date }}</span>
+                    <span data-field="przejechane_kilometry" data-id="{{ delivery.id }}"
+                            onclick="edit('przejechane_kilometry','{{ delivery.id }}','trasy')"
+                            >{{ delivery.route_length }}</span>
+                    <span>
+                        {{ delivery.consumedFuel }}
+                    </span>
+                    <span data-field="poprawne_kilometry" data-id="{{ delivery.id }}"
+                            onclick="edit('poprawne_kilometry','{{ delivery.id }}','trasy')"
+                            >{{ delivery.optimal_route_length }}</span>
+                    <span data-field="poprawne_spalanie" data-id="{{ delivery.id }}"
+                            onclick="edit('poprawne_spalanie','{{ delivery.id }}','trasy')"
+                            >{{ delivery.optimal_fuel_consumption }}</span>
+                    <span>
+                        {{ delivery.spalanieD100 }}
+                    </span>
+                    <span>
+                        {{ delivery.spalanieP100 }}
+                    </span>
+                    <span>
+                        {{ delivery.difference }}
+                    </span>
+                </div>
+            {% endfor %}
+            <div class="row suma">
+                <span>Liczba tras: {{ content.deliveriesCount }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
