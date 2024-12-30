@@ -13,13 +13,7 @@ class CarsRepository
 
     public function getAll(): array
     {
-        $drivers = $this->db->query("SELECT * FROM cars");
-        $list = [];
-        foreach ($drivers as $row) :
-            $list[] = $row;
-        endforeach;
-
-        return $list;
+        return $this->db->query("SELECT * FROM cars")->fetchAll();
     }
 
     public function getAllShortened(): array
@@ -31,5 +25,14 @@ class CarsRepository
     endforeach;
 
     return $list;
+    }
+
+    public function getRegistrationById(int $id): string
+    {
+        $regNumber = $this->db->query(
+            "SELECT registration_nb FROM cars WHERE id={$id}"
+        )->fetch();
+
+        return $regNumber[0];
     }
 }

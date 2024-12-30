@@ -1,36 +1,35 @@
-
-       span {
-           padding: 10px;
-           border: solid 1px #ccc;
-           background: #eee;
-       }
-       input[type='submit'] {
-           background: orangered;
+span {
+    padding: 10px;
+    border: solid 1px #ccc;
+    background: #eee;
+}
+input[type='submit'] {
+    background: orangered;
     color: #fff;
     font-weight: 700;
-       }
-       .zakupy span, .wydania span, .samochody span, .kierowcy span {
-           width: 10%;
-       }
-       .zakupy input, .wydania input, .samochody input, .kierowcy input {
-           width: 10%;
-       }
-       .dodaj-zakup form, .dodaj-wydanie form, .dodaj-kierowca form, .dodaj-samochod form, .dodaj-trasa form {
-           display: flex;
-           width: 100%;
-       }
-       
-       .trasy span {
-           width: 8%;
-       }
-       .trasy input {
-           width: 8%;
-       }
-       .table-head span {
-            background: #2e3192;
-           color: #fff;
-       }
-       #editPopUp, #przypiszPopUp, #przypiszKierPopUp {
+}
+.zakupy span, .wydania span, .samochody span, .kierowcy span {
+    width: 10%;
+}
+.zakupy input, .wydania input, .samochody input, .kierowcy input {
+    width: 10%;
+}
+.dodaj-zakup form, .dodaj-wydanie form, .dodaj-kierowca form, .dodaj-samochod form, .dodaj-trasa form {
+    display: flex;
+    width: 100%;
+}
+
+.trasy span {
+    width: 8%;
+}
+.trasy input {
+    width: 8%;
+}
+.table-head span {
+    background: #2e3192;
+    color: #fff;
+}
+#editPopUp, #przypiszPopUp, #przypiszKierPopUp {
     z-index: 100;
     top: 0;
     left: 0;

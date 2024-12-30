@@ -47,27 +47,27 @@
 			</form>
 		</div>
 
-		{% if content.zakupPoczatek or content.dostawcaFiltr or content.zakupKoniec %}
+		{% if content.dateStartFilter or content.supplierFilter or content.dateEndFilter %}
 			<div class="row">
 				<div class="col-4">
 					Aktywne filtry:<br>
-					{% if content.dostawcaFiltr %}
+					{% if content.supplierFilter %}
 						Dostawca:
-						{{ content.dostawcaFiltr }}
+						{{ content.supplierFilter }}
 						<br>
 					{% endif %}
 				</div>
 				<div class="col-4">
-					{% if content.zakupPoczatek %}
+					{% if content.dateStartFilter %}
 						Data początkowa:
-						{{ content.zakupPoczatek }}
+						{{ content.dateStartFilter }}
 						<br>
 					{% endif %}
 				</div>
 				<div class="col-4">
-					{% if content.zakupKoniec %}
+					{% if content.dateEndFilter %}
 						Data końcowa:
-						{{ content.zakupKoniec }}
+						{{ content.dateEndFilter }}
 						<br>
 					{% endif %}
 				</div>

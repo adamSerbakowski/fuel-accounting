@@ -22,9 +22,9 @@
                     <input type="text" id="bak_adblue" name="nazwisko">
                 </form>
             </div>
-            <div class='row'>
-
+            
             {% for car in content.cars %}
+            <div class='row'>
                 <span>
                     {{ car.id }}
                 </span>
@@ -37,9 +37,9 @@
                 <span data-field='bak_adblue' data-id='{{ car.id }}' 
                         onclick='edit(`bak_adblue`,`{{ car.id }}`,`samochody`)'
                     >{{ car.adblue_tank }}</span>
+            </div>
             {% endfor %}
 
-            </div>
         </div>
     </div>
 </div>

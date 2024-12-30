@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Controllers;
 
 use Twig\Environment;
 use App\Repositories\DriversRepository;
 use App\Repositories\CarsRepository;
+use App\DB;
 
 abstract class Controller
 {

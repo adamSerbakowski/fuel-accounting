@@ -1,6 +1,5 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
-// include_once 'src/config.php'; 
 include_once 'src/Router.php'; 
 use App\Router;
 

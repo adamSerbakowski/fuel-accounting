@@ -1,8 +1,8 @@
 <?php 
 
-namespace App;
+namespace App\Controllers;
 
-use App\Controller;
+use App\Controllers\Controller;
 
 class DeliveriesController extends Controller
 {
