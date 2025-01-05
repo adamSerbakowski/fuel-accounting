@@ -33,6 +33,7 @@ class CarsRepository
             "SELECT registration_nb FROM cars WHERE id={$id}"
         )->fetch();
 
-        return $regNumber[0];
+        // remove after validation is added
+        return $regNumber[0] ?? '';
     }
 }

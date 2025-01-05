@@ -1,0 +1,20 @@
+<div id="przypiszPopUp">
+    <div class="popUp__inner">
+        <div class="closeBtn"><i class="fas fa-times"></i></div>
+        <p class="popup__header">Wybierz z listy</p>
+        <div>
+            <form onsubmit="submitPrzypisz(event)">
+                <input type="text" name="var" id="varP" list="numeryrejEdit"/>
+                <datalist id="numeryrejEdit">
+
+                    {% for car in cars %}
+                        <option data-id='{{ car.id }}' value='{{ car.nb }}'>{{ car.nb }}</option>
+                    {% endfor %}
+
+                </datalist>
+                <input onclick="sendPrzypiszForm()" type="submit" class="form-control mt-3" value="Zapisz"/>
+                <input type="button" onclick="exitPrzypiszForm()" class="form-control mt-3" value="Anuluj" />
+            </form>
+        </div>
+    </div>
+</div>

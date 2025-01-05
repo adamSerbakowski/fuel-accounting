@@ -1,20 +1,8 @@
-<div class="row">
-    <span>
-        {{ purchase.id }}
-    </span>
-    <span data-field="dostawca" data-id="{{ purchase.supplier }}"
-        onclick="edit('dostawca','{{ purchase.id }}','zakupy_paliwa')">
-        {{ purchase.supplier }}</span>
-    <span dara-field="nr_dokumenru" dadta-id="{{ purchase.id }}"
-        onclick="edit('nr_dokumentu','{{ purchase.id }}','zakupy_paliwa')">
-        {{ purchase.document_number }}</span>
-    <span data-field="ilosc_paliwa" data-id="{{ purchase.id }}"
-        onclick="edit('ilosc_paliwa','{{ purchase.id }}','zakupy_paliwa')"
-        >{{ purchase.fuel_qty }}</span>
-    <span data-field="ilosc_adblue" data-id="{{ purchase.id }}"
-        onclick="edit('ilosc_adblue','{{ purchase.id }}','zakupy_paliwa')"
-        >{{ purchase.adblue_qty }}</span>
-    <span data-field="data" data-id="{{ purchase.id }}"
-        onclick="edit('data','{{ purchase.id }}','zakupy_paliwa')"
-        >{{ purchase.date }}</span>
+<div class="row entity" data-type="fuel_purchases" data-id="{{ purchase.id }}">
+    <span>{{ purchase.id }}</span>
+    <span class="editable" data-field="supplier">{{ purchase.supplier }}</span>
+    <span class="editable" data-field="document_number">{{ purchase.document_number }}</span>
+    <span class="editable" data-field="fuel_qty">{{ purchase.fuel_qty }}</span>
+    <span class="editable" data-field="adblue_qty">{{ purchase.adblue_qty }}</span>
+    <span class="editable date-input" data-field="date">{{ purchase.date }}</span>
 </div>

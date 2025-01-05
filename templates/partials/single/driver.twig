@@ -1,14 +1,8 @@
-<div class='row'>
+<div class='row entity' data-type="truck_drivers" data-id="{{ driver.id }}">
     <span>
         {{ driver.id }}
     </span>
-    <span data-field='nazwisko' data-id='{{ driver.id }}' onclick='edit(`nazwisko`,`{{ driver.id }}`,`kierowcy`)'>
-        {{ driver.name }}
-    </span>
-    <span data-field='aktywny' data-id='{{ driver.id }}' onclick='edit(`aktywny`,`{{ driver.id }}`,`kierowcy`)'>
-        {{ driver.active }}
-    </span>
-    <span data-field='data_rozliczenia' data-id='{{ driver.id }}' onclick='edit(`data_rozliczenia`,`{{ driver.id }}`,`kierowcy`)'>
-        {{ driver.settlement_date}}
-    </span>
+    <span data-field='name'>{{ driver.name }}</span>
+    <span class="editable" data-field='active'>{{ driver.active }}</span>
+    <span class="editable date-input" data-field='settlement_date'>{{ driver.settlement_date }}</span>
 </div>

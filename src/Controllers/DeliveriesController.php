@@ -17,7 +17,6 @@ class DeliveriesController extends Controller
     {
         $data = $this->getDeliveries();
         return [
-            // 'cars' => $this->carsRepository->getAll(),
             'deliveries' => $data['list'],
             'deliveriesCount' => $data['liczbaTras'],
         ];
@@ -25,6 +24,8 @@ class DeliveriesController extends Controller
 
     private function getDeliveries()
     {
+
+        // solve id mismatch
         $getTrasy = "SELECT * FROM deliveries "
         . "INNER JOIN truck_drivers ON deliveries.id_driver = truck_drivers.id "
         . "INNER JOIN cars ON deliveries.id_car = cars.id "
@@ -68,8 +69,8 @@ class DeliveriesController extends Controller
         $spalaniea = 0;
         $pasujaceWydania = $this->db->query("SELECT * FROM fuel_releases WHERE `id_car`='$id_car' AND `date`>='$data_poczatek' AND `date`<='$data_koniec'");
         foreach ($pasujaceWydania as $row2) : 
-            $spalaniep += $row2['w_ilosc_paliwa'];
-            $spalaniea += $row2['w_ilosc_adblue'];
+            $spalaniep += $row2['released_fuel_qty'];
+            $spalaniea += $row2['released_adblue_qty'];
         endforeach;
 
         return [$spalaniep, $spalaniea];

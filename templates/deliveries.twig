@@ -34,7 +34,6 @@
 					</datalist>
 					<input type="text" id="kierowca" name="kierowca" list="trasakierowca">
 					<datalist id="trasakierowca">
-
 						{% for driver in drivers %}
 							<option data-id='{{ driver.id }}' value='{{ driver.id }}'>{{ driver.name }}</option>
 						{% endfor %}
@@ -49,41 +48,7 @@
             </div>
 
             {% for delivery in content.deliveries%}
-		        <div class="row">
-                    <span>
-                        {{ delivery.id }}
-                    </span>
-                    <span data-field="id_samochod" data-id="{{ delivery.id }}" data-tab="trasy" onclick="przypisz('id_samochod','{{ delivery.id }}','trasy')">{{ delivery.registration_nb }}</span>
-                    <span data-field="id_kierowca" data-id="{{ delivery.id }}" data-tab="trasy" 
-                            onclick="przypiszKier('id_kierowca','{{ delivery.id }}','trasy')">{{ delivery.name }}</span>
-                    <span data-field="data_poczatek" data-id="{{ delivery.id }}"
-                            onclick="edit('data_poczatek','{{ delivery.id }}','trasy')"
-                            >{{ delivery.start_date }}</span>
-                    <span data-field="data_koniec" data-id="{{ delivery.id }}"
-                            onclick="edit('data_koniec','{{ delivery.id }}','trasy')"
-                            >{{ delivery.end_date }}</span>
-                    <span data-field="przejechane_kilometry" data-id="{{ delivery.id }}"
-                            onclick="edit('przejechane_kilometry','{{ delivery.id }}','trasy')"
-                            >{{ delivery.route_length }}</span>
-                    <span>
-                        {{ delivery.consumedFuel }}
-                    </span>
-                    <span data-field="poprawne_kilometry" data-id="{{ delivery.id }}"
-                            onclick="edit('poprawne_kilometry','{{ delivery.id }}','trasy')"
-                            >{{ delivery.optimal_route_length }}</span>
-                    <span data-field="poprawne_spalanie" data-id="{{ delivery.id }}"
-                            onclick="edit('poprawne_spalanie','{{ delivery.id }}','trasy')"
-                            >{{ delivery.optimal_fuel_consumption }}</span>
-                    <span>
-                        {{ delivery.spalanieD100 }}
-                    </span>
-                    <span>
-                        {{ delivery.spalanieP100 }}
-                    </span>
-                    <span>
-                        {{ delivery.difference }}
-                    </span>
-                </div>
+		        {% include '/partials/single/delivery.twig' %}
             {% endfor %}
             <div class="row suma">
                 <span>Liczba tras: {{ content.deliveriesCount }}</span>

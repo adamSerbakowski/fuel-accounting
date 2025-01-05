@@ -8,6 +8,7 @@ use App\Controllers\DeliveriesController;
 use App\Controllers\DriversController;
 use App\Controllers\PurchasesController;
 use App\Controllers\ReleasesController;
+use App\Controllers\AggregatedDeliveriesController;
 use App\Services\UpdateService;
 
 class Router
@@ -28,6 +29,8 @@ class Router
                 return (new PurchasesController())->renderTemplate();
             case 'trasy':
                 return (new DeliveriesController())->renderTemplate();
+            case 'wgraj-trase':
+                return (new AggregatedDeliveriesController())->renderTemplate();
             case 'dataUpdate':
                 return (new UpdateService())->add($_POST);
             default:
@@ -41,6 +44,4 @@ class Router
 
         return $uri[0];
     }
-
-
 }

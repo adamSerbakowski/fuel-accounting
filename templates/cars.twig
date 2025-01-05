@@ -24,20 +24,7 @@
             </div>
             
             {% for car in content.cars %}
-            <div class='row'>
-                <span>
-                    {{ car.id }}
-                </span>
-                <span data-field='nr_rejestracyjny' data-id='{{ car.id }}' 
-                    onclick='edit(`nr_rejestracyjny`,`{{ car.id }}`,`samochody`)'
-                    >{{ car.registration_nb }}</span>
-                <span data-field='bak_paliwo' data-id='{{ car.id }}' 
-                        onclick='edit(`bak_paliwo`,`{{ car.id }}`,`samochody`)'
-                    >{{ car.fuel_tank }}</span>
-                <span data-field='bak_adblue' data-id='{{ car.id }}' 
-                        onclick='edit(`bak_adblue`,`{{ car.id }}`,`samochody`)'
-                    >{{ car.adblue_tank }}</span>
-            </div>
+                {% include '/partials/single/car.twig' %}
             {% endfor %}
 
         </div>

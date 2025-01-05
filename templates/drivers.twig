@@ -26,7 +26,7 @@
 
         <p>Kierowcy archiwalni</p>
 
-        {% for row in content.archivedDrivers %}
+        {% for driver in content.archivedDrivers %}
             {% include '/partials/single/driver.twig' with {'driver': driver} %}
         {% endfor %}
         

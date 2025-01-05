@@ -1,24 +1,11 @@
-<div class='row'>
+<div class='row entity' data-type="fuel_releases" data-id="{{ release.id }}">
     <span>
         {{ release.id }}
     </span>
-    <span data-field='id_samochod' data-id='{{ release.id }}' data-tab='wydania_paliwa' 
-        onclick='przypisz(`id_samochod`,`{{ release.id }}`,`wydania_paliwa`)'>
-        {{ release.registration_nb }}
-    </span>
-    <span data-field='w_ilosc_paliwa' data-id='{{ release.id }}'
-        onclick='edit(`w_ilosc_paliwa`,`{{ release.id }}`,`wydania_paliwa`)'
-        >{{ release.released_fuel_qty }}</span>
-    <span data-field='w_ilosc_adblue' data-id='{{ release.id }}'
-        onclick='edit(`w_ilosc_adblue`,`{{ release.id }}`,`wydania_paliwa`)'
-        >{{ release.released_adblue_qty }}</span>
-    <span data-field='w_ilosc_ref' data-id='{{ release.id }}'
-        onclick='edit(`w_ilosc_ref`,`{{ release.id }}`,`wydania_paliwa`)'
-        >{{ release.released_ref_qty }}</span>
-    <span data-field='data_wydania' data-id='{{ release.id }}'
-        onclick='edit(`data_wydania`,`{{ release.id }}`,`wydania_paliwa`)'
-        >{{ release.date }}</span>
-    <span data-field='rodzaj' data-id='{{ release.id }}'
-        onclick='edit(`rodzaj`,`{{ release.id }}`,`wydania_paliwa`)'
-        >{{ release.type }}</span>
+    <span class='editable' data-field='id_car'>{{ release.registration_nb }}</span>
+    <span class="editable" data-field='released_fuel_qty'>{{ release.released_fuel_qty }}</span>
+    <span class="editable" data-field='released_adblue_qty'>{{ release.released_adblue_qty }}</span>
+    <span class="editable" data-field='released_ref_qty'>{{ release.released_ref_qty }}</span>
+    <span class="editable date-input" data-field='date'>{{ release.date }}</span>
+    <span class="editable" data-field='type'>{{ release.type }}</span>
 </div>

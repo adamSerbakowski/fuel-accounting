@@ -1,0 +1,19 @@
+<div class='row entity' data-type="deliveries" data-id="{{ delivery.id }}">
+    <span>{{ delivery.id }}</span>
+
+
+    <span data-field="id_samochod" data-id="{{ delivery.id }}" data-tab="trasy" onclick="przypisz('id_samochod','{{ delivery.id }}','trasy')">{{ delivery.registration_nb }}</span>
+    <span data-field="id_kierowca" data-id="{{ delivery.id }}" data-tab="trasy" 
+            onclick="przypiszKier('id_kierowca','{{ delivery.id }}','trasy')">{{ delivery.name }}</span>
+
+
+    <span class="editable date-input" data-field="data_poczatek">{{ delivery.start_date }}</span>
+    <span class="editable date-input" data-field="end_date">{{ delivery.end_date }}</span>
+    <span class="editable" data-field="route_length">{{ delivery.route_length }}</span>
+    <span>{{ delivery.consumedFuel }}</span>
+    <span class="editable" data-field="optimal_route_length">{{ delivery.optimal_route_length }}</span>
+    <span class="editable" data-field="optimal_fuel_consumption">{{ delivery.optimal_fuel_consumption }}</span>
+    <span>{{ delivery.spalanieD100 }}</span>
+    <span>{{ delivery.spalanieP100 }}</span>
+    <span>{{ delivery.difference }}</span>
+</div>

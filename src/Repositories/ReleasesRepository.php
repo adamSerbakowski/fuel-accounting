@@ -19,7 +19,7 @@ class ReleasesRepository
         foreach ($samochodyF as $row) {
             if (!$row['id_car']) {
                 continue;
-            }
+            } 
             $regNumber = $carsRepo->getRegistrationById($row['id_car']);
             $list[] = [
                 'carId' => $row['id_car'],
@@ -42,8 +42,9 @@ class ReleasesRepository
         $end = $filters['dateEndFilter'];
 
         if (!$start && !$car && !$end) {
-            return "SELECT * FROM fuel_releases 
-                INNER JOIN cars ON fuel_releases.id_car = cars.id 
+            return "SELECT r.id, r.id_car, c.registration_nb, r.released_fuel_qty, r.released_adblue_qty, r.released_ref_qty, r.date, r.type 
+                FROM fuel_releases r 
+                INNER JOIN cars c ON r.id_car = c.id 
                 ORDER BY date DESC;";
         }
 
@@ -64,8 +65,9 @@ class ReleasesRepository
             $terms .= "id_car = '{$car}'";
         endif;
               
-        return "SELECT * FROM fuel_releases 
-            INNER JOIN cars ON fuel_releases.id_car = cars.id 
+        return "SELECT r.id, r.id_car, c.registration_nb, r.released_fuel_qty, r.released_adblue_qty, r.released_ref_qty, r.date, r.type 
+            FROM fuel_releases r
+            INNER JOIN cars c ON r.id_car = c.id 
             WHERE {$terms} 
             ORDER BY date DESC;";
     }

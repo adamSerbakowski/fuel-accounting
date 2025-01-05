@@ -1,5 +1,8 @@
 <?php include_once 'config.php';
 
+// ADD Dates validation
+
+
 //kierowcy
 // nazwisko, name
 // $db->query(

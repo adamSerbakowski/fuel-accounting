@@ -2,71 +2,7 @@ $(document).ajaxStop(function(){
     window.location.reload();
 });
 
-function submitEdit(ev) {
-    ev.preventDefault();
-    
-    if (ev.key === 'Enter') {
-        if ($('#var').val()!== '') {
-            sendEditForm();
-        }
-    }
-}
-        
-var fieldToEdit = '';
-var idToEdit = '';
-var napToEdit = '';
-
-function edit(field, id, tabela) {
-    $('#editPopUp').css('display','block');
-    $('.popup__header').text('Edycja '+field);
-    var fieldVal = $(`span[data-field=''+field+''][data-id=''+id+'']`).text();
-    if (fieldVal === '') {
-        $('#var').attr('placeholder', 'Wprowadź nowy '+field);
-    } else {
-        $('#var').val(fieldVal);
-    }
-    
-    fieldToEdit = field;
-    idToEdit = id;
-    napToEdit = tabela;
-    //console.log();
-}
-
-
-
-function sendEditForm () {
-   // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
-            $.ajax({
-                url         : '/paliwo/update.php', 
-                type      : 'POST', 
-                dataType    : 'json', 
-                data        : { 
-                    id: idToEdit,
-                    field: fieldToEdit,
-                    value: $('#var').val(),
-                    naprawa: napToEdit
-                }})
-                .done(function(res) {
-                    if (res.code === 1) {
-                        fieldToEdit = '';
-                        idToEdit = '';
-                        location.reload();
-            
-                    } else {
-                        console.error('błąd połączenia');
-                    }
-                }); 
-
-                
-}
-function exitEditForm() {
-    $('#editPopUp').css('display','none');
-    fieldToEdit = '';
-    idToEdit = '';
-    $('#var').val('');
-}
-
-// DODAWANIE
+// ADDITIONS
 
 function dodajZakup(ev) {
     ev.preventDefault();
@@ -75,17 +11,18 @@ function dodajZakup(ev) {
 
 function sendZakup() {
      $.ajax({
-                url         : '/dataUpdate', 
-                type      : 'POST', 
-                dataType    : 'json', 
-                data        : { 
-                    type: 'addPurchase',
-                    dostawca: $('#dostawca').val(),
-                    nr_dokumentu: $('#nr_dokumentu').val(),
-                    ilosc_paliwa: $('#ilosc_paliwa').val(),
-                    ilosc_adblue: $('#ilosc_adblue').val(),
-                    data_zakupu: $('#data_zakupu').val()
-                }})
+        url : '/dataUpdate', 
+        type : 'POST', 
+        dataType : 'json', 
+        data : { 
+            type: 'addPurchase',
+            dostawca: $('#dostawca').val(),
+            nr_dokumentu: $('#nr_dokumentu').val(),
+            ilosc_paliwa: $('#ilosc_paliwa').val(),
+            ilosc_adblue: $('#ilosc_adblue').val(),
+            data_zakupu: $('#data_zakupu').val()
+        }
+    })
 }
 
 function dodajWydanie(ev) {
@@ -134,7 +71,6 @@ function sendTrasa() {
 }
 
 function dodajKierowca(ev) {
-    
     ev.preventDefault();
     sendKierowca();
 }
@@ -148,7 +84,8 @@ function sendKierowca() {
         data        : {
             type: 'addDriver',
             nazwisko: $('#nazwisko').val()
-        }})
+        }
+    });
 }
 
 function dodajSamochod(ev) {
@@ -167,104 +104,188 @@ function sendSamochod() {
             nr_rejestracyjny: $('#nr_rejestracyjny').val(),
             bak_paliwo: $('#bak_paliwo').val(),
             bak_adblue: $('#bak_adblue').val()
-        }})
+        }
+    });
 }
 
-// PRZYPISYWANIE
+function dodajTrasaCala(ev) {
+    ev.preventDefault();
+    sendTrasaCala();
+}
 
+function sendTrasaCala() {
+    let deliveryPurchases = [];
+    inputPurchases = $( "#deliveryPurchases" ).find( ".deliveryPurchase" );
+    inputPurchases.each(function() {
+        purchase = {
+            w_ilosc_paliwa: $(this).find('.w_ilosc_paliwa').val(),
+            w_ilosc_adblue: $(this).find('.w_ilosc_adblue').val(), 
+            w_ilosc_ref: $(this).find('.w_ilosc_ref').val(), 
+            data_wydania: $(this).find('.data_wydania').val(), 
+            rodzaj: $(this).find('.rodzaj').val(),   
+        };
+        deliveryPurchases.push(purchase);
+    });
+
+    $.ajax({
+        url : '/dataUpdate', 
+        type : 'POST', 
+        dataType : 'json', 
+        data : {
+            type: 'addAggregatedDelivery',
+            samochod: $('#samochod').val(),
+            kierowca: $('#kierowca').val(),
+            data_poczatek: $('#data_poczatek').val(),
+            data_koniec: $('#data_koniec').val(),
+            przejechane_kilometry: $('#przejechane_kilometry').val(),
+            poprawne_kilometry: $('#poprawne_kilometry').val(),
+            poprawne_spalanie: $('#poprawne_spalanie').val(),
+            purchases: deliveryPurchases
+        }
+    });
+}
+
+// EDITION
+
+var fieldToEdit = '';
+var idToEdit = '';
+var tableToEdit = '';
+var currentValue = '';
+
+$(window).ready(function() {
+    $('.editable').click(function() {
+        fieldToEdit = $(this).attr('data-field');
+        idToEdit = $(this).parent().attr('data-id');
+        tableToEdit = $(this).parent().attr('data-type');
+        currentValue = $(this).text();
+
+        if ($(this).hasClass('date-input')) {
+            $('#var').attr('type', 'date');
+        } else {
+            $('#var').attr('type', 'text');
+        };
+
+        if (fieldToEdit === 'id_car') {
+            showCarRelationEditPopup();
+        }
+        else if (fieldToEdit === 'id_driver') {
+            showDriverRelationEditPopup();
+        } else {
+            showEditPopup();
+        };
+    });
+});
+
+function showEditPopup() {
+    $('#editPopUp').css('display','block');
+    $('.popup__header').text('Edycja '+fieldToEdit);
+    if (!currentValue) {
+        $('#var').attr('placeholder', 'Wprowadź nowy '+fieldToEdit);
+    } else {
+        $('#var').val(currentValue);
+    }
+}
+
+function submitEdit(ev) {
+    ev.preventDefault();
+    if (ev.key === 'Enter') {
+        if ($('#var').val()!== '') {
+            sendEditForm();
+        }
+    }
+}
+
+function sendEditForm () {
+    $.ajax({
+        url         : '/dataUpdate', 
+        type      : 'POST', 
+        dataType    : 'json', 
+        data        : {
+            type: 'updateField',
+            id: idToEdit,
+            field: fieldToEdit,
+            value: $('#var').val(),
+            table: tableToEdit
+        }
+    })
+}
+
+function exitEditForm() {
+    $('#editPopUp').css('display','none');
+    fieldToEdit = '';
+    idToEdit = '';
+    $('#var').val('');
+    currentValue = '';
+}
 function submitPrzypisz(ev) {
     ev.preventDefault();
     
     if (ev.key === 'Enter') {
-        if ($('#varP').val()!== '' || $('#varK').val()!== '' ) {
+        if ($('#varP').val()) {
             sendPrzypiszForm();
         }
+            
+            
+        //     $('#varK').val()) {
 
+        //     sendPrzypiszForm();
+        // }
     }
 }
-        
-var fieldToEdit = '';
-var idToEdit = '';
-var napToEdit = '';
 
-function przypisz(field, id, tabela) {
+function showCarRelationEditPopup() {
     $('#przypiszPopUp').css('display','block');
-    var fieldVal = $(`span[data-field=''+field+''][data-id=''+id+''][data-tab=''+tabela+'']`).text();
-    if (fieldVal === '') {
-        $('#varP').attr('placeholder', 'Wprowadź nowy '+field);
+    if (!currentValue) {
+        $('#varP').attr('placeholder', 'Wprowadź nowy '+fieldToEdit);
     } else {
-        $('#varP').val(fieldVal);
+        $('#varP').val(currentValue);
     }
-    
-    fieldToEdit = field;
-    idToEdit = id;
-    napToEdit = tabela;
-    //console.log();
 }
-function przypiszKier(field, id, tabela) {
+
+function showDriverRelationEditPopup() {
     $('#przypiszKierPopUp').css('display','block');
-    var fieldVal = $(`span[data-field=''+field+''][data-id=''+id+''][data-tab=''+tabela+'']`).text();
-    if (fieldVal === '') {
-        $('#varK').attr('placeholder', 'Wprowadź nowy '+field);
+    if (!currentValue) {
+        $('#varK').attr('placeholder', 'Wprowadź nowy '+fieldToEdit);
     } else {
-        $('#varK').val(fieldVal);
+        $('#varK').val(currentValue);
     }
-    
-    fieldToEdit = field;
-    idToEdit = id;
-    napToEdit = tabela;
-    //console.log();
 }
 
 function sendPrzypiszForm () {
-   // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
-            $.ajax({
-                url         : '/paliwo/update.php', 
-                type      : 'POST', 
-                dataType    : 'json', 
-                data        : { 
-                    id: idToEdit,
-                    field: fieldToEdit,
-                    value: $('#varP').val(),
-                    naprawa: napToEdit
-                }})
-                .done(function(res) {
-                    if (res.code === 1) {
-                        fieldToEdit = '';
-                        idToEdit = '';
-                        location.reload();
-            
-                    } else {
-                        console.error('błąd połączenia');
-                    }
-                }); 
+    v = findValidCar($('#varP').val());
+    if (v == []) {
+        console.log('no matching car found');
+    } else {
+        $.ajax({
+            url : '/dataUpdate', 
+            type : 'POST', 
+            dataType : 'json', 
+            data : { 
+                type: 'updateField',
+                id: idToEdit,
+                field: fieldToEdit,
+                value: v.id,
+                table: tableToEdit
+            }
+        })
+    }
 
-                
+    console.log(v);
+
 }
 function sendPrzypiszFormKier () {
-   // console.log(idToEdit, fieldToEdit, $('#var').val(), napToEdit);
-            $.ajax({
-                url         : '/paliwo/update.php', 
-                type      : 'POST', 
-                dataType    : 'json', 
-                data        : { 
-                    id: idToEdit,
-                    field: fieldToEdit,
-                    value: $('#varK').val(),
-                    naprawa: napToEdit
-                }})
-                .done(function(res) {
-                    if (res.code === 1) {
-                        fieldToEdit = '';
-                        idToEdit = '';
-                        location.reload();
-            
-                    } else {
-                        console.error('błąd połączenia');
-                    }
-                }); 
-
-                
+    $.ajax({
+        url         : '/dataUpdate', 
+        type      : 'POST', 
+        dataType    : 'json', 
+        data        : {
+            type: 'updateField',
+            id: idToEdit,
+            field: fieldToEdit,
+            value: $('#varK').val(),
+            table: tableToEdit
+        }
+    })
 }
 function exitPrzypiszForm() {
     $('#przypiszPopUp').css('display','none');
@@ -275,143 +296,25 @@ function exitPrzypiszForm() {
     $('#varK').val('');
 }
 
-// FILTRY
+function findValidCar(registration) {
+    validCars = $( "#numeryrejEdit" ).find('option');
+    v = [];
+    validCars.each(function() {
+        car = {
+            id: $(this).attr('data-id'),
+            registration: $(this).val(),
+        };
+        v.push(car);
+    });
+    match = $.grep( v, function(n) {
+        return n.registration === registration;
+    });
+    // console.log(v);
+    // console.log(registration);
+    // console.log(match);
+    // if (v.includes(registration)) {
+    //     return true;
+    // }
 
-//function filtrDostawca(dostawca) {
-//    dostawcaFiltr = dostawca;
-//    console.log(dostawcaFiltr);
-//    $.ajax({
-//                url         : '/paliwo/?dostawcaFiltr='+dostawcaFiltr, 
-//                type      : 'GET', 
-//                dataType    : 'json', 
-//                data        : { 
-//                    dostawcaFiltr: dostawcaFiltr
-//                }})
-//            .done(function(res) {
-//                        location.reload();
-//                }); 
-//}
-
-
-function filtrujZakupy () {
-    
-                $.ajax({
-                url         : '/', 
-                type      : 'GET', 
-                dataType    : 'json', 
-                data        : { 
-                    dataPoczatek: $('#zakupPoczatek').val(),
-                    dataKoniec: $('#zakupKoniec').val(),
-                    dostawcaFiltr: $('#dostawcaFi').val()
-                }});
-            $('#wybranyDostawca').text($('#dostawcaFi').val());
-            }
-
-
-function filtrujWydania () {
-    
-                $.ajax({
-                url         : '/', 
-                type      : 'GET', 
-                dataType    : 'json', 
-                data        : { 
-                    wdataPoczatek: $('#wydaniePoczatek').val(),
-                    wdataKoniec: $('#wydanieKoniec').val(),
-                    samochodFiltr: $('#samochodFi').val()
-                }});
-            $('#wybranySamochod').text($('#samochodFi').val());
-            }
-            
-            
-            
-function dodajTrasaCala(ev) {
-    ev.preventDefault();
-    sendTrasaCala();
-}
-
-function sendTrasaCala() {
-     $.ajax({
-                url         : '/paliwo/dodaj-cala-trasa.php', 
-                type      : 'POST', 
-                dataType    : 'json', 
-                data        : { 
-                    samochod: $('#samochod').val(),
-                    kierowca: $('#kierowca').val(),
-                    data_poczatek: $('#data_poczatek').val(),
-                    data_koniec: $('#data_koniec').val(),
-                    przejechane_kilometry: $('#przejechane_kilometry').val(),
-                     poprawne_kilometry: $('#poprawne_kilometry').val(),
-                    poprawne_spalanie: $('#poprawne_spalanie').val(),
-
-                    w_ilosc_paliwa1: $('#w_ilosc_paliwa1').val(),
-                    w_ilosc_adblue1: $('#w_ilosc_adblue1').val(), 
-                    w_ilosc_ref1: $('#w_ilosc_ref1').val(), 
-                    data_wydania1: $('#data_wydania1').val(), 
-                    rodzaj1: $('#rodzaj1').val(),            
-            
-                    w_ilosc_paliwa2: $('#w_ilosc_paliwa2').val(),
-                    w_ilosc_adblue2: $('#w_ilosc_adblue2').val(), 
-                    w_ilosc_ref2: $('#w_ilosc_ref2').val(), 
-                    data_wydania2: $('#data_wydania2').val(), 
-                    rodzaj2: $('#rodzaj2').val(), 
-                    
-                    w_ilosc_paliwa3: $('#w_ilosc_paliwa3').val(),
-                    w_ilosc_adblue3: $('#w_ilosc_adblue3').val(), 
-                    w_ilosc_ref3: $('#w_ilosc_ref3').val(), 
-                    data_wydania3: $('#data_wydania3').val(), 
-                    rodzaj3: $('#rodzaj3').val(), 
-                    
-                    w_ilosc_paliwa4: $('#w_ilosc_paliwa4').val(),
-                    w_ilosc_adblue4: $('#w_ilosc_adblue4').val(), 
-                    w_ilosc_ref4: $('#w_ilosc_ref4').val(), 
-                    data_wydania4: $('#data_wydania4').val(), 
-                    rodzaj4: $('#rodzaj4').val(), 
-                    
-                    w_ilosc_paliwa5: $('#w_ilosc_paliwa5').val(),
-                    w_ilosc_adblue5: $('#w_ilosc_adblue5').val(), 
-                    w_ilosc_ref5: $('#w_ilosc_ref5').val(), 
-                    data_wydania5: $('#data_wydania5').val(), 
-                    rodzaj5: $('#rodzaj5').val()
-
-                }})
-                .done(function(res2) {
-                    samochod: '';
-            kierowca: '';
-                    data_poczatek: '';
-                    data_koniec: '';
-                    przejechane_kilometry: '';
-                    poprawne_kilometry: '';
-                    poprawne_spalanie: '';
-                    
-                    w_ilosc_paliwa1: '';
-                    w_ilosc_adblue1: '';
-                    w_ilosc_ref1: '';
-                    data_wydania1: '';
-                    rodzaj1: '';
-                    
-                    w_ilosc_paliwa2: '';
-                    w_ilosc_adblue2: '';
-                    w_ilosc_ref2: '';
-                    data_wydania2: '';
-                    rodzaj2: '';
-                    
-                    w_ilosc_paliwa3: '';
-                    w_ilosc_adblue3: '';
-                    w_ilosc_ref3: '';
-                    data_wydania3: '';
-                    rodzaj3: '';
-                    
-                    w_ilosc_paliwa4: '';
-                    w_ilosc_adblue4: '';
-                    w_ilosc_ref4: '';
-                    data_wydania4: '';
-                    rodzaj4: '';
-                    
-                    w_ilosc_paliwa5: '';
-                    w_ilosc_adblue5: '';
-                    w_ilosc_ref5: '';
-                    data_wydania5: '';
-                    rodzaj5: '';
-            location.reload();
-                }); 
+    return match;
 }
