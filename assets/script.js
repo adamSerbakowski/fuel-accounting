@@ -151,8 +151,13 @@ var fieldToEdit = '';
 var idToEdit = '';
 var tableToEdit = '';
 var currentValue = '';
+var validCars = [];
+var validDrivers = [];
 
 $(window).ready(function() {
+    getValidCars();
+    getValidDrivers();
+
     $('.editable').click(function() {
         fieldToEdit = $(this).attr('data-field');
         idToEdit = $(this).parent().attr('data-id');
@@ -217,19 +222,20 @@ function exitEditForm() {
     $('#var').val('');
     currentValue = '';
 }
-function submitPrzypisz(ev) {
+function submitChangeCarRelation(ev) {
     ev.preventDefault();
-    
     if (ev.key === 'Enter') {
         if ($('#varP').val()) {
             sendPrzypiszForm();
         }
-            
-            
-        //     $('#varK').val()) {
-
-        //     sendPrzypiszForm();
-        // }
+    }
+}
+function submitChangeDriverRelation(ev) {
+    ev.preventDefault();
+    if (ev.key === 'Enter') {
+        if ($('#varK').val()) {
+            sendPrzypiszFormKier();
+        }
     }
 }
 
@@ -252,8 +258,8 @@ function showDriverRelationEditPopup() {
 }
 
 function sendPrzypiszForm () {
-    v = findValidCar($('#varP').val());
-    if (v == []) {
+    v = matchValidCar($('#varP').val());
+    if (v.length == 0) {
         console.log('no matching car found');
     } else {
         $.ajax({
@@ -264,28 +270,30 @@ function sendPrzypiszForm () {
                 type: 'updateField',
                 id: idToEdit,
                 field: fieldToEdit,
-                value: v.id,
+                value: v[0].id,
                 table: tableToEdit
             }
         })
     }
-
-    console.log(v);
-
 }
 function sendPrzypiszFormKier () {
-    $.ajax({
-        url         : '/dataUpdate', 
-        type      : 'POST', 
-        dataType    : 'json', 
-        data        : {
-            type: 'updateField',
-            id: idToEdit,
-            field: fieldToEdit,
-            value: $('#varK').val(),
-            table: tableToEdit
-        }
-    })
+    v = matchValidDriver($('#varK').val());
+    if (v.length == 0) {
+        console.log('no matching driver found');
+    } else {
+        $.ajax({
+            url         : '/dataUpdate', 
+            type      : 'POST', 
+            dataType    : 'json', 
+            data        : {
+                type: 'updateField',
+                id: idToEdit,
+                field: fieldToEdit,
+                value: v[0].id,
+                table: tableToEdit
+            }
+        })
+    }
 }
 function exitPrzypiszForm() {
     $('#przypiszPopUp').css('display','none');
@@ -296,25 +304,43 @@ function exitPrzypiszForm() {
     $('#varK').val('');
 }
 
-function findValidCar(registration) {
-    validCars = $( "#numeryrejEdit" ).find('option');
-    v = [];
-    validCars.each(function() {
+
+// TOOLS
+
+function matchValidCar(registration) {
+    match = $.grep( validCars, function(n) {
+        return n.registration === registration;
+    });
+
+    return match;
+}
+
+function matchValidDriver(name) {
+    match = $.grep( validDrivers, function(n) {
+        return n.name === name;
+    });
+
+    return match;
+}
+
+function getValidCars() {
+    carsList = $( "#numeryrejEdit" ).find('option');
+    carsList.each(function() {
         car = {
             id: $(this).attr('data-id'),
             registration: $(this).val(),
         };
-        v.push(car);
+        validCars.push(car);
     });
-    match = $.grep( v, function(n) {
-        return n.registration === registration;
-    });
-    // console.log(v);
-    // console.log(registration);
-    // console.log(match);
-    // if (v.includes(registration)) {
-    //     return true;
-    // }
+}
 
-    return match;
+function getValidDrivers() {
+    driversList = $( "#numeryrejEdit" ).find('option');
+    driversList.each(function() {
+        driver = {
+            id: $(this).attr('data-id'),
+            name: $(this).val(),
+        };
+        validCars.push(driver);
+    });
 }

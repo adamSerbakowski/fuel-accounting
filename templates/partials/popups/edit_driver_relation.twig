@@ -3,12 +3,12 @@
         <div class="closeBtn"><i class="fas fa-times"></i></div>
         <p class="popup__header">Wybierz z listy</p>
         <div>
-            <form onsubmit="submitPrzypisz(event)">
+            <form onsubmit="submitChangeDriverRelation(event)">
                 <input type="text" name="var" id="varK" list="nazwiskoEdit"/>
                 <datalist id="nazwiskoEdit">
 
                     {% for driver in drivers %}
-                        <option data-id='{{ driver.id }}' value='{{ driver.id }}'>{{ driver.name }}</option>
+                        <option data-id='{{ driver.id }}' value='{{ driver.name }}'>{{ driver.name }}</option>
                     {% endfor %}
 
                 </datalist>
