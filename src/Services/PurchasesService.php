@@ -34,8 +34,9 @@ class PurchasesService
         $wSumieZakupAdblue = 0;
         foreach ($list as $row) {
             $liczbaZakupow++;
-            $wSumieZakupPaliwo += $row['fuel_qty'];
-            $wSumieZakupAdblue += $row['adblue_qty'];
+
+            $wSumieZakupPaliwo += intval($row['fuel_qty']) ?? 0;
+            $wSumieZakupAdblue += intval($row['adblue_qty']) ?? 0;
         }
 
         return [

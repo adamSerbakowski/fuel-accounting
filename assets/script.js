@@ -2,131 +2,112 @@ $(document).ajaxStop(function(){
     window.location.reload();
 });
 
-// ADDITIONS
-
-function dodajZakup(ev) {
-    ev.preventDefault();
-    sendZakup();
-}
-
-function sendZakup() {
-     $.ajax({
+function ajaxPost(data) {
+    $.ajax({
         url : '/dataUpdate', 
         type : 'POST', 
         dataType : 'json', 
-        data : { 
-            type: 'addPurchase',
-            dostawca: $('#dostawca').val(),
-            nr_dokumentu: $('#nr_dokumentu').val(),
-            ilosc_paliwa: $('#ilosc_paliwa').val(),
-            ilosc_adblue: $('#ilosc_adblue').val(),
-            data_zakupu: $('#data_zakupu').val()
-        }
+        data : data
     })
 }
 
-function dodajWydanie(ev) {
+// ADDITIONS
+
+function addPurchase(ev) {
     ev.preventDefault();
-    sendWydanie();
+    ajaxPost({
+        type: 'addPurchase',
+        dostawca: $('#dostawca').val(),
+        nr_dokumentu: $('#nr_dokumentu').val(),
+        ilosc_paliwa: $('#ilosc_paliwa').val(),
+        ilosc_adblue: $('#ilosc_adblue').val(),
+        data_zakupu: $('#data_zakupu').val()
+    })
 }
 
-function sendWydanie() {
+function addRelease(ev) {
+    ev.preventDefault();
     v = matchValidCar($('#samochod').val());
     if (v.length == 0) {
         console.log('no matching car found');
     } else {
-        $.ajax({
-            url : '/dataUpdate', 
-            type : 'POST', 
-            dataType : 'json', 
-            data : {
-                type: 'addRelease',
-                samochod: v[0].id,
-                w_ilosc_paliwa: $('#w_ilosc_paliwa').val(),
-                w_ilosc_adblue: $('#w_ilosc_adblue').val(),
-                w_ilosc_ref: $('#w_ilosc_ref').val(),
-                data_wydania: $('#data_wydania').val(),
-                rodzaj: $('#rodzaj').val()
-            }
+        ajaxPost({
+            type: 'addRelease',
+            samochod: v[0].id,
+            w_ilosc_paliwa: $('#w_ilosc_paliwa').val(),
+            w_ilosc_adblue: $('#w_ilosc_adblue').val(),
+            w_ilosc_ref: $('#w_ilosc_ref').val(),
+            data_wydania: $('#data_wydania').val(),
+            rodzaj: $('#rodzaj').val()
         })
     }
 }
 
-function dodajTrasa(ev) {
+function addDriver(ev) {
     ev.preventDefault();
-    sendTrasa();
+    // add validation error message
+    ajaxPost({
+        type: 'addDriver',
+        nazwisko: $('#nazwisko').val()
+    });
 }
 
-function sendTrasa() {
+function addCar(ev) {
+    ev.preventDefault();
+    // add validation error message
+    ajaxPost({
+        type: 'addCar',
+        nr_rejestracyjny: $('#nr_rejestracyjny').val(),
+        bak_paliwo: $('#bak_paliwo').val(),
+        bak_adblue: $('#bak_adblue').val()
+    });
+}
+
+function addDelivery(ev) {
+    ev.preventDefault();
+    let data = prepareDeliveryData();
+    if (data) {
+        let extendedData = $.extend({type: 'addDelivery'}, data)
+        ajaxPost(extendedData);
+    }
+}
+
+function addAggregatedDelivery(ev) {
+    ev.preventDefault();
+    let data = prepareDeliveryData();
+    if (data) {
+        let extendedData = $.extend(
+            {type: 'addAggregatedDelivery'}, 
+            data, 
+            prepareDeliveryPurchases()
+        )
+        ajaxPost(extendedData);
+    }
+}
+
+function prepareDeliveryData() {
     let car = matchValidCar($('#samochod').val());
     let driver = matchValidDriver($('#kierowca').val());
     if (car.length == 0) {
         console.log('no matching car found');
+        return false;
     } else if (driver.length == 0) {
         console.log('no matching driver found');
+        return false;
     } else {
-        $.ajax({
-            url : '/dataUpdate', 
-            type : 'POST', 
-            dataType : 'json', 
-            data : {
-                type: 'addDelivery',
-                samochod: car[0].id,
-                kierowca:  driver[0].id,
-                data_poczatek: $('#data_poczatek').val(),
-                data_koniec: $('#data_koniec').val(),
-                przejechane_kilometry: $('#przejechane_kilometry').val(),
-                poprawne_kilometry: $('#poprawne_kilometry').val(),
-                poprawne_spalanie: $('#poprawne_spalanie').val()
-            }
-        })
+        return {
+            samochod: car[0].id,
+            kierowca:  driver[0].id,
+            data_poczatek: $('#data_poczatek').val(),
+            data_koniec: $('#data_koniec').val(),
+            przejechane_kilometry: $('#przejechane_kilometry').val(),
+            poprawne_kilometry: $('#poprawne_kilometry').val(),
+            poprawne_spalanie: $('#poprawne_spalanie').val()
+        }
     }
 }
 
-function dodajKierowca(ev) {
-    ev.preventDefault();
-    sendKierowca();
-}
-
-function sendKierowca() {
-    // add validation error message
-     $.ajax({
-        url         : '/dataUpdate', 
-        type      : 'POST', 
-        dataType    : 'json', 
-        data        : {
-            type: 'addDriver',
-            nazwisko: $('#nazwisko').val()
-        }
-    });
-}
-
-function dodajSamochod(ev) {
-    ev.preventDefault();
-    sendSamochod();
-}
-
-function sendSamochod() {
-    // add validation error message
-     $.ajax({
-        url         : '/dataUpdate', 
-        type      : 'POST', 
-        dataType    : 'json', 
-        data        : {
-            type: 'addCar',
-            nr_rejestracyjny: $('#nr_rejestracyjny').val(),
-            bak_paliwo: $('#bak_paliwo').val(),
-            bak_adblue: $('#bak_adblue').val()
-        }
-    });
-}
-
-function dodajTrasaCala(ev) {
-    ev.preventDefault();
-    sendTrasaCala();
-}
-
-function sendTrasaCala() {
+function prepareDeliveryPurchases() {
     let deliveryPurchases = [];
     inputPurchases = $( "#deliveryPurchases" ).find( ".deliveryPurchase" );
     inputPurchases.each(function() {
@@ -139,30 +120,7 @@ function sendTrasaCala() {
         };
         deliveryPurchases.push(purchase);
     });
-    let car = matchValidCar($('#samochod').val());
-    let driver = matchValidDriver($('#kierowca').val());
-    if (car.length == 0) {
-        console.log('no matching car found');
-    } else if (driver.length == 0) {
-        console.log('no matching driver found');
-    } else {
-        $.ajax({
-            url : '/dataUpdate', 
-            type : 'POST', 
-            dataType : 'json', 
-            data : {
-                type: 'addAggregatedDelivery',
-                samochod: car[0].id,
-                kierowca:  driver[0].id,
-                data_poczatek: $('#data_poczatek').val(),
-                data_koniec: $('#data_koniec').val(),
-                przejechane_kilometry: $('#przejechane_kilometry').val(),
-                poprawne_kilometry: $('#poprawne_kilometry').val(),
-                poprawne_spalanie: $('#poprawne_spalanie').val(),
-                purchases: deliveryPurchases
-            }
-        });
-    }
+    return {purchases: deliveryPurchases};
 }
 
 // EDITION
@@ -175,40 +133,46 @@ $(window).ready(function() {
         let replaced = release.replaceAll('{{ count }}', c);
         $('#deliveryPurchases').append(replaced);
         c++;
-        }
-    )
+    });
+
+    $('.close-button').click(function () {
+        $('.popup').css('display','none');
+        fieldToEdit = '';
+        idToEdit = '';
+        $('.var').val('');
+        currentValue = '';
+    });
 
     $('.editable').click(function() {
         fieldToEdit = $(this).attr('data-field');
         idToEdit = $(this).parent().attr('data-id');
         tableToEdit = $(this).parent().attr('data-type');
         currentValue = $(this).text();
-
         if ($(this).hasClass('date-input')) {
-            $('#var').attr('type', 'date');
+            $('.var').attr('type', 'date');
         } else {
-            $('#var').attr('type', 'text');
+            $('.var').attr('type', 'text');
         };
-
-        if (fieldToEdit === 'id_car') {
-            showCarRelationEditPopup();
-        }
-        else if (fieldToEdit === 'id_driver') {
-            showDriverRelationEditPopup();
-        } else {
-            showEditPopup();
-        };
+        showPopup()
     });
 });
 
-function showEditPopup() {
-    $('#editPopUp').css('display','block');
+function showPopup() {
     $('.popup__header').text('Edycja '+fieldToEdit);
     if (!currentValue) {
-        $('#var').attr('placeholder', 'Wprowadź nowy '+fieldToEdit);
+        $('.var').attr('placeholder', 'Wprowadź nowy '+fieldToEdit);
     } else {
-        $('#var').val(currentValue);
+        $('.var').val(currentValue);
     }
+
+    if (fieldToEdit === 'id_car') {
+        $('#przypiszPopUp').css('display','block');
+    }
+    else if (fieldToEdit === 'id_driver') {
+        $('#przypiszKierPopUp').css('display','block');
+    } else {
+        $('#editPopUp').css('display','block'); 
+    };
 }
 
 function submitEdit(ev) {
@@ -220,28 +184,6 @@ function submitEdit(ev) {
     }
 }
 
-function sendEditForm () {
-    $.ajax({
-        url         : '/dataUpdate', 
-        type      : 'POST', 
-        dataType    : 'json', 
-        data        : {
-            type: 'updateField',
-            id: idToEdit,
-            field: fieldToEdit,
-            value: $('#var').val(),
-            table: tableToEdit
-        }
-    })
-}
-
-function exitEditForm() {
-    $('#editPopUp').css('display','none');
-    fieldToEdit = '';
-    idToEdit = '';
-    $('#var').val('');
-    currentValue = '';
-}
 function submitChangeCarRelation(ev) {
     ev.preventDefault();
     if (ev.key === 'Enter') {
@@ -259,22 +201,14 @@ function submitChangeDriverRelation(ev) {
     }
 }
 
-function showCarRelationEditPopup() {
-    $('#przypiszPopUp').css('display','block');
-    if (!currentValue) {
-        $('#varP').attr('placeholder', 'Wprowadź nowy '+fieldToEdit);
-    } else {
-        $('#varP').val(currentValue);
-    }
-}
-
-function showDriverRelationEditPopup() {
-    $('#przypiszKierPopUp').css('display','block');
-    if (!currentValue) {
-        $('#varK').attr('placeholder', 'Wprowadź nowy '+fieldToEdit);
-    } else {
-        $('#varK').val(currentValue);
-    }
+function sendEditForm () {
+    ajaxPost({
+        type: 'updateField',
+        id: idToEdit,
+        field: fieldToEdit,
+        value: $('#var').val(),
+        table: tableToEdit
+    })
 }
 
 function sendPrzypiszForm () {
@@ -282,17 +216,12 @@ function sendPrzypiszForm () {
     if (v.length == 0) {
         console.log('no matching car found');
     } else {
-        $.ajax({
-            url : '/dataUpdate', 
-            type : 'POST', 
-            dataType : 'json', 
-            data : { 
-                type: 'updateField',
-                id: idToEdit,
-                field: fieldToEdit,
-                value: v[0].id,
-                table: tableToEdit
-            }
+        ajaxPost({
+            type: 'updateField',
+            id: idToEdit,
+            field: fieldToEdit,
+            value: v[0].id,
+            table: tableToEdit
         })
     }
 }
@@ -301,29 +230,15 @@ function sendPrzypiszFormKier () {
     if (v.length == 0) {
         console.log('no matching driver found');
     } else {
-        $.ajax({
-            url         : '/dataUpdate', 
-            type      : 'POST', 
-            dataType    : 'json', 
-            data        : {
-                type: 'updateField',
-                id: idToEdit,
-                field: fieldToEdit,
-                value: v[0].id,
-                table: tableToEdit
-            }
+        ajaxPost({
+            type: 'updateField',
+            id: idToEdit,
+            field: fieldToEdit,
+            value: v[0].id,
+            table: tableToEdit
         })
     }
 }
-function exitPrzypiszForm() {
-    $('#przypiszPopUp').css('display','none');
-    $('#przypiszKierPopUp').css('display','none');
-    fieldToEdit = '';
-    idToEdit = '';
-    $('#varP').val('');
-    $('#varK').val('');
-}
-
 
 // TOOLS
 
@@ -336,7 +251,6 @@ function matchValidCar(registration) {
 }
 
 function matchValidDriver(name) {
-    console.log(validDrivers);
     match = $.grep( validDrivers, function(n) {
         return n.name === name;
     });

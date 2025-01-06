@@ -12,16 +12,16 @@
 				<span>Data początkowa</span>
 				<span>Data końcowa</span>
 				<span>Przejechane kilometry kierowcy</span>
-				<span>Paliwo kierowca</span>
 				<span>Kilometry system</span>
 				<span>Paliwo system</span>
+				<span>Paliwo kierowca</span>
 				<span>Spalanie l/100km kierowcy</span>
 				<span>Spalanie l/100km system</span>
 				<span>Różnica (l)</span>
 			</div>
 
 			<div class="row dodaj-trasa">
-				<form onsubmit="dodajTrasa(event)">
+				<form onsubmit="addDelivery(event)">
 					{% include '/partials/addition_forms/delivery.twig' %}
                 </form>
             </div>

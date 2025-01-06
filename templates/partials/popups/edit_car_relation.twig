@@ -1,10 +1,10 @@
-<div id="przypiszPopUp">
+<div id="przypiszPopUp" class="popup">
     <div class="popUp__inner">
         <div class="closeBtn"><i class="fas fa-times"></i></div>
         <p class="popup__header">Wybierz z listy</p>
         <div>
             <form onsubmit="submitChangeCarRelation(event)">
-                <input type="text" name="var" id="varP" list="numeryrejEdit"/>
+                <input type="text" name="var" id="varP" class="var" list="numeryrejEdit"/>
                 <datalist id="numeryrejEdit">
 
                     {% for car in cars %}
@@ -13,7 +13,7 @@
 
                 </datalist>
                 <input onclick="sendPrzypiszForm()" type="submit" class="form-control mt-3" value="Zapisz"/>
-                <input type="button" onclick="exitPrzypiszForm()" class="form-control mt-3" value="Anuluj" />
+                <input type="button" class="form-control mt-3 close-button" value="Anuluj" />
             </form>
         </div>
     </div>
