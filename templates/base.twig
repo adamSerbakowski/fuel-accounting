@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rozliczanie paliwa</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" ></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">  
+        <meta name="robots" content="noindex, nofollow" />
+        <script>
+            {{ scripts|raw }}
+        </script>
+        <style>
+            {{ styles|raw }}
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid" id="nav">
+            <div class="row">
+                <ul class="menu">
+                    <li><a href="/">Strona główna</a></li>
+                    <li><a href="/trasy">Trasy</a></li>
+                    <li><a href="/zakupy">Zakupy</a></li>
+                    <li><a href="/wydania">Wydania</a></li>
+                    <li><a href="/samochody">Samochody</a></li>
+                    <li><a href="/kierowcy">Kierowcy</a></li>
+                    <li><a href="/wgraj-trase">Dodaj całą trasę</a></li>
+                </ul>
+            </div>
+        </div>
+
+        {% block content %}
+
+        {% endblock %}
+
+        <div class="stopka"></div>
+
+        {% include '/partials/popups/edit.twig'%}
+
+        {% include '/partials/popups/edit_car_relation.twig' %}
+
+        {% include '/partials/popups/edit_driver_relation.twig' %}
+        
+    </body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="col-12 col-md-12">
+        <div class="samochody">
+            <h2>Samochody</h2>
+        <div class="tabela col-12">
+            <div class="row table-head">
+                <span>ID</span>
+                <span>Nr rejestracyjny</span>
+                <span>Wielkość zbiornika paliwa</span>
+                <span>Wielkość zbiornika adblue</span>
+            </div>
+            <div class="row dodaj-samochod">
+                <form onsubmit="addCar(event)">
+                    <input type="submit" value="DODAJ">
+                    <input type="text" id="nr_rejestracyjny" name="nr_rejestracyjny">
+                    <input type="text" id="bak_paliwo" name="bak_paliwo">
+                    <input type="text" id="bak_adblue" name="bak_adblue">
+                </form>
+            </div>
+            
+            {% for car in content.cars %}
+                {% include '/partials/single/car.twig' %}
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

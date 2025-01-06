@@ -1,0 +1,38 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="col-12 col-md-12">
+	<div class="trasy">
+		<h2>Trasy</h2>
+		<div class="tabela col-12">
+			<div class="row table-head">
+				<span>ID</span>
+				<span>Samochód</span>
+				<span>Kierowca</span>
+				<span>Data początkowa</span>
+				<span>Data końcowa</span>
+				<span>Przejechane kilometry kierowcy</span>
+				<span>Kilometry system</span>
+				<span>Paliwo system</span>
+				<span>Paliwo kierowca</span>
+				<span>Spalanie l/100km kierowcy</span>
+				<span>Spalanie l/100km system</span>
+				<span>Różnica (l)</span>
+			</div>
+
+			<div class="row dodaj-trasa">
+				<form onsubmit="addDelivery(event)">
+					{% include '/partials/addition_forms/delivery.twig' %}
+                </form>
+            </div>
+
+            {% for delivery in content.deliveries%}
+		        {% include '/partials/single/delivery.twig' %}
+            {% endfor %}
+            <div class="row suma">
+                <span>Liczba tras: {{ content.deliveriesCount }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

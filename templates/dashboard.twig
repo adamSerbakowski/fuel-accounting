@@ -1,0 +1,18 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="container-fluid" id="dashboard">
+    <div class="row">
+        <div class="col-12">
+
+            {% include '/partials/purchases_list.twig' %}
+            
+        </div>
+        <div class="col-12 mt-5">
+
+            {% include '/partials/releases_list.twig' %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

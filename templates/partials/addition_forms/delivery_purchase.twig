@@ -1,0 +1,13 @@
+<h4>Tankowanie do trasy {{ count }}</h4>
+<div class='deliveryPurchase' data-purchaseId='{{ count }}'>
+<input type="text" class="w_ilosc_paliwa" name="w_ilosc_paliwa{{ count }}" placeholder="Wpisz ilość paliwa">
+<input type="text" class="w_ilosc_adblue" name="w_ilosc_adblue{{ count }}" placeholder="Wpisz ilość adblue">
+<input type="text" class="w_ilosc_ref" name="w_ilosc_ref{{ count }}" placeholder="Wpisz ilość REF">
+<input type="date" class="data_wydania" name="data_wydania{{ count }}" placeholder="Wybierz datę">
+<input type="text" class="rodzaj" name="rodzaj{{ count }}" placeholder="Baza czy trasa" list="rodzaje{{ count }}">
+<datalist id="rodzaje{{ count }}">
+    <option value="baza">baza</option>
+    <option value="E100">E100</option>
+    <option value="inne">inne</option>
+</datalist>
+</div>

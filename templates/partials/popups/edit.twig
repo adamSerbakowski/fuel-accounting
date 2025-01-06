@@ -1,0 +1,13 @@
+<div id="editPopUp" class="popup">
+    <div class="popUp__inner">
+        <div class="closeBtn"><i class="fas fa-times"></i></div>
+        <p class="popup__header"></p>
+        <div>
+            <form onsubmit="submitEdit(event)">
+                <input type="text" name="var" id="var" class="var"/>
+                <input onclick="sendEditForm()" type="submit" class="form-control mt-3" value="Zapisz" />
+                <input type="button" class="form-control mt-3 close-button" value="Anuluj" />
+            </form>
+        </div>
+    </div>
+</div>
