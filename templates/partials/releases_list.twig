@@ -42,7 +42,7 @@
                 <input id="samochod" name="samochod" list="numeryrej" placeholder="Wybierz z listy">
                 <datalist id="numeryrej">
                     {% for car in cars %}
-                        <option data-id='{{ car.id }}' value='{{ car.id }}'>{{ car.nb }}</option>
+                        <option data-id='{{ car.id }}' value='{{ car.nb }}'>{{ car.nb }}</option>
                     {% endfor %}
                 </datalist>
                 <input type="text" id="w_ilosc_paliwa" name="w_ilosc_paliwa" placeholder="Wpisz ilość paliwa">

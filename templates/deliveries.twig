@@ -2,9 +2,6 @@
 
 {% block content %}
 <div class="col-12 col-md-12">
-	<div>
-		Odśwież stronę aby zobaczyć aktualne dane.
-	</div>
 	<div class="trasy">
 		<h2>Trasy</h2>
 		<div class="tabela col-12">
@@ -25,25 +22,7 @@
 
 			<div class="row dodaj-trasa">
 				<form onsubmit="dodajTrasa(event)">
-					<input type="submit" value="DODAJ">
-					<input id="samochod" name="samochod" list="numeryrej" placeholder="Wybierz z listy">
-					<datalist id="numeryrej">
-						{% for car in cars %}
-							<option data-id='{{ car.id }}' value='{{ car.id }}'>{{ car.nb }}</option>
-						{% endfor %}
-					</datalist>
-					<input type="text" id="kierowca" name="kierowca" list="trasakierowca">
-					<datalist id="trasakierowca">
-						{% for driver in drivers %}
-							<option data-id='{{ driver.id }}' value='{{ driver.id }}'>{{ driver.name }}</option>
-						{% endfor %}
-					</datalist>
-					<input type="date" id="data_poczatek" name="data_poczatek">
-					<input type="date" id="data_koniec" name="data_koniec">
-					<input type="text" id="przejechane_kilometry" name="przejechane_kilometry">
-					<input disabled></input>
-				<input type="text" id="poprawne_kilometry" name="poprawne_kilometry">
-				<input type="text" id="poprawne_spalanie" name="poprawne_spalanie">
+					{% include '/partials/addition_forms/delivery.twig' %}
                 </form>
             </div>
 

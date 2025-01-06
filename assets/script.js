@@ -31,20 +31,25 @@ function dodajWydanie(ev) {
 }
 
 function sendWydanie() {
-     $.ajax({
-        url : '/dataUpdate', 
-        type : 'POST', 
-        dataType : 'json', 
-        data : {
-            type: 'addRelease',
-            samochod: $('#samochod').val(),
-            w_ilosc_paliwa: $('#w_ilosc_paliwa').val(),
-            w_ilosc_adblue: $('#w_ilosc_adblue').val(),
-            w_ilosc_ref: $('#w_ilosc_ref').val(),
-            data_wydania: $('#data_wydania').val(),
-            rodzaj: $('#rodzaj').val()
-        }
-    })
+    v = matchValidCar($('#samochod').val());
+    if (v.length == 0) {
+        console.log('no matching car found');
+    } else {
+        $.ajax({
+            url : '/dataUpdate', 
+            type : 'POST', 
+            dataType : 'json', 
+            data : {
+                type: 'addRelease',
+                samochod: v[0].id,
+                w_ilosc_paliwa: $('#w_ilosc_paliwa').val(),
+                w_ilosc_adblue: $('#w_ilosc_adblue').val(),
+                w_ilosc_ref: $('#w_ilosc_ref').val(),
+                data_wydania: $('#data_wydania').val(),
+                rodzaj: $('#rodzaj').val()
+            }
+        })
+    }
 }
 
 function dodajTrasa(ev) {
@@ -53,21 +58,29 @@ function dodajTrasa(ev) {
 }
 
 function sendTrasa() {
-     $.ajax({
-        url : '/dataUpdate', 
-        type : 'POST', 
-        dataType : 'json', 
-        data : {
-            type: 'addDelivery',
-            samochod: $('#samochod').val(),
-            kierowca: $('#kierowca').val(),
-            data_poczatek: $('#data_poczatek').val(),
-            data_koniec: $('#data_koniec').val(),
-            przejechane_kilometry: $('#przejechane_kilometry').val(),
-            poprawne_kilometry: $('#poprawne_kilometry').val(),
-            poprawne_spalanie: $('#poprawne_spalanie').val()
-        }
-    })
+    let car = matchValidCar($('#samochod').val());
+    let driver = matchValidDriver($('#kierowca').val());
+    if (car.length == 0) {
+        console.log('no matching car found');
+    } else if (driver.length == 0) {
+        console.log('no matching driver found');
+    } else {
+        $.ajax({
+            url : '/dataUpdate', 
+            type : 'POST', 
+            dataType : 'json', 
+            data : {
+                type: 'addDelivery',
+                samochod: car[0].id,
+                kierowca:  driver[0].id,
+                data_poczatek: $('#data_poczatek').val(),
+                data_koniec: $('#data_koniec').val(),
+                przejechane_kilometry: $('#przejechane_kilometry').val(),
+                poprawne_kilometry: $('#poprawne_kilometry').val(),
+                poprawne_spalanie: $('#poprawne_spalanie').val()
+            }
+        })
+    }
 }
 
 function dodajKierowca(ev) {
@@ -126,37 +139,44 @@ function sendTrasaCala() {
         };
         deliveryPurchases.push(purchase);
     });
-
-    $.ajax({
-        url : '/dataUpdate', 
-        type : 'POST', 
-        dataType : 'json', 
-        data : {
-            type: 'addAggregatedDelivery',
-            samochod: $('#samochod').val(),
-            kierowca: $('#kierowca').val(),
-            data_poczatek: $('#data_poczatek').val(),
-            data_koniec: $('#data_koniec').val(),
-            przejechane_kilometry: $('#przejechane_kilometry').val(),
-            poprawne_kilometry: $('#poprawne_kilometry').val(),
-            poprawne_spalanie: $('#poprawne_spalanie').val(),
-            purchases: deliveryPurchases
-        }
-    });
+    let car = matchValidCar($('#samochod').val());
+    let driver = matchValidDriver($('#kierowca').val());
+    if (car.length == 0) {
+        console.log('no matching car found');
+    } else if (driver.length == 0) {
+        console.log('no matching driver found');
+    } else {
+        $.ajax({
+            url : '/dataUpdate', 
+            type : 'POST', 
+            dataType : 'json', 
+            data : {
+                type: 'addAggregatedDelivery',
+                samochod: car[0].id,
+                kierowca:  driver[0].id,
+                data_poczatek: $('#data_poczatek').val(),
+                data_koniec: $('#data_koniec').val(),
+                przejechane_kilometry: $('#przejechane_kilometry').val(),
+                poprawne_kilometry: $('#poprawne_kilometry').val(),
+                poprawne_spalanie: $('#poprawne_spalanie').val(),
+                purchases: deliveryPurchases
+            }
+        });
+    }
 }
 
 // EDITION
 
-var fieldToEdit = '';
-var idToEdit = '';
-var tableToEdit = '';
-var currentValue = '';
-var validCars = [];
-var validDrivers = [];
-
 $(window).ready(function() {
     getValidCars();
     getValidDrivers();
+
+    $('#add-release').click(function () {
+        let replaced = release.replaceAll('{{ count }}', c);
+        $('#deliveryPurchases').append(replaced);
+        c++;
+        }
+    )
 
     $('.editable').click(function() {
         fieldToEdit = $(this).attr('data-field');
@@ -316,6 +336,7 @@ function matchValidCar(registration) {
 }
 
 function matchValidDriver(name) {
+    console.log(validDrivers);
     match = $.grep( validDrivers, function(n) {
         return n.name === name;
     });
@@ -335,12 +356,33 @@ function getValidCars() {
 }
 
 function getValidDrivers() {
-    driversList = $( "#numeryrejEdit" ).find('option');
+    driversList = $( "#nazwiskoEdit" ).find('option');
     driversList.each(function() {
         driver = {
             id: $(this).attr('data-id'),
             name: $(this).val(),
         };
-        validCars.push(driver);
+        validDrivers.push(driver);
     });
 }
+
+var fieldToEdit = '';
+var idToEdit = '';
+var tableToEdit = '';
+var currentValue = '';
+var validCars = [];
+var validDrivers = [];
+var release = `<h4>Tankowanie do trasy {{ count }}</h4>
+<div class='deliveryPurchase' data-purchaseId='{{ count }}'>
+<input type="text" class="w_ilosc_paliwa" name="w_ilosc_paliwa{{ count }}" placeholder="Wpisz ilość paliwa">
+<input type="text" class="w_ilosc_adblue" name="w_ilosc_adblue{{ count }}" placeholder="Wpisz ilość adblue">
+<input type="text" class="w_ilosc_ref" name="w_ilosc_ref{{ count }}" placeholder="Wpisz ilość REF">
+<input type="date" class="data_wydania" name="data_wydania{{ count }}" placeholder="Wybierz datę">
+<input type="text" class="rodzaj" name="rodzaj{{ count }}" placeholder="Baza czy trasa" list="rodzaje{{ count }}">
+<datalist id="rodzaje{{ count }}">
+    <option value="baza">baza</option>
+    <option value="E100">E100</option>
+    <option value="inne">inne</option>
+</datalist>
+</div>`;
+var c = 2;

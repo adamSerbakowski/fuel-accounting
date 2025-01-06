@@ -24,23 +24,40 @@ class DeliveriesController extends Controller
 
     private function getDeliveries()
     {
-
-        // solve id mismatch
-        $getTrasy = "SELECT * FROM deliveries "
-        . "INNER JOIN truck_drivers ON deliveries.id_driver = truck_drivers.id "
-        . "INNER JOIN cars ON deliveries.id_car = cars.id "
-        . "ORDER BY start_date DESC;";
+        $getTrasy = "SELECT d.id, d.id_car, d.id_driver, d.start_date, d.end_date, d.route_length, d.optimal_route_length, d.optimal_fuel_consumption, t.name, c.registration_nb
+            FROM deliveries as d
+            INNER JOIN truck_drivers as t ON d.id_driver = t.id
+            INNER JOIN cars as c ON d.id_car = c.id
+            ORDER BY start_date DESC;";
         $trasy = $this->db->query($getTrasy);
         $liczbaTras = 0;
         $list = [];
         foreach ($trasy as $row) : 
+            $routeLength = $row['route_length'] ?? 0;
+            $optimalFuelConsumption = $row['optimal_fuel_consumption'] ?? 0;
+            $optimalRouteLength = $row['optimal_route_length'] ?? 0;
             $fuelConsumed = $this->getDeliveryReleases($row['id_car'], $row['start_date'], $row['end_date']);
-            $spalaniep = $fuelConsumed[0];
-            $spalaniea = $fuelConsumed[1];
-            $spalanieD100 = round($spalaniep / ($row['route_length'] / 100),2);
-            $spalanieP100 = round($row['optimal_fuel_consumption'] / ($row['optimal_route_length'] / 100),2);
-            $difference = round($row['optimal_fuel_consumption'] - $spalaniep, 2);
-            
+            $spalaniep = $fuelConsumed[0] ?? 0;
+            $spalaniea = $fuelConsumed[1] ?? 0;
+            if ($routeLength) {
+                $spalanieD100 = round(
+                    ($spalaniep / ($routeLength / 100)), 
+                    2
+                );
+            } else {
+                $spalanieD100 = 0;
+            }
+            if ($optimalRouteLength) {
+                $spalanieP100 = round(
+                    ($optimalFuelConsumption / ($optimalRouteLength / 100)), 
+                    2
+                );
+                $difference = round($optimalFuelConsumption - $spalaniep, 2);
+            } else {
+                $spalanieP100 = 0;
+                $difference = 'brak danych';
+            }
+
             $list[] = [
                 'id' => $row['id'],
                 'samochod' => $row['id_car'],
@@ -69,8 +86,8 @@ class DeliveriesController extends Controller
         $spalaniea = 0;
         $pasujaceWydania = $this->db->query("SELECT * FROM fuel_releases WHERE `id_car`='$id_car' AND `date`>='$data_poczatek' AND `date`<='$data_koniec'");
         foreach ($pasujaceWydania as $row2) : 
-            $spalaniep += $row2['released_fuel_qty'];
-            $spalaniea += $row2['released_adblue_qty'];
+            $spalaniep += $row2['released_fuel_qty'] ?? 0;
+            $spalaniea += $row2['released_adblue_qty'] ?? 0;
         endforeach;
 
         return [$spalaniep, $spalaniea];

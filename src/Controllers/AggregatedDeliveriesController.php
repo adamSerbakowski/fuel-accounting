@@ -13,12 +13,7 @@ class AggregatedDeliveriesController extends Controller
 
     public function getContent()
     {
-        //$data = $this->getDeliveries();
-        return [
-            // 'cars' => $this->carsRepository->getAll(),
-            // 'deliveries' => $data['list'],
-            // 'deliveriesCount' => $data['liczbaTras'],
-        ];
+        return [];
     }
 }
 

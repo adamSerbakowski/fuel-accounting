@@ -1,16 +1,7 @@
 {% extends "base.twig" %}
 
 {% block content %}
-
-<div class="container-fluid" id="zakupy">
-	<div class="row">
-		<div class="col-12">
-			<div>
-				Odśwież stronę aby zobaczyć aktualne dane.
-			</div>
-			{% include '/partials/purchases_list.twig' %}
-		</div>
+	<div class="col-12">
+		{% include '/partials/purchases_list.twig' %}
 	</div>
-</div>
-
 {% endblock %}
