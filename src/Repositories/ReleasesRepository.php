@@ -11,6 +11,24 @@ class ReleasesRepository
         $this->db = $db;
     }
 
+    public function getFiltered($filters): array
+    {
+        return $this->db->query($this->buildQuery($filters))->fetchAll();
+    }
+
+    public function getDeliveryReleases(int $id_car, string $data_poczatek, string $data_koniec): array
+    {
+        $consumedFuel = 0;
+        $consumedAdblue = 0;
+        $deliveryReleases = $this->db->query("SELECT * FROM fuel_releases WHERE `id_car`='$id_car' AND `date`>='$data_poczatek' AND `date`<='$data_koniec'");
+        foreach ($deliveryReleases as $row) : 
+            $consumedFuel += (float) $row['released_fuel_qty'] ?? 0;
+            $consumedAdblue += (float) $row['released_adblue_qty'] ?? 0;
+        endforeach;
+
+        return [$consumedFuel, $consumedAdblue];
+    }
+
     public function getAllCarsFromReleases(): array
     {
         $samochodyF = $this->db->query("SELECT DISTINCT id_car FROM fuel_releases");
@@ -30,11 +48,6 @@ class ReleasesRepository
         return $list;
     }
 
-    public function getFiltered($filters)
-    {
-        return $this->db->query($this->buildQuery($filters))->fetchAll();
-    }
-
     private function buildQuery(array $filters): string
     {
         $car = $filters['carFilter'];
@@ -49,21 +62,21 @@ class ReleasesRepository
         }
 
         $terms = '';    
-        if ($end) :
+        if ($end) {
             $terms .= "date <= '{$end}'";
-        endif;
-        if ($start) :
+        }
+        if ($start) {
             if ($terms) {
                 $terms .= ' AND ';
             }
             $terms .= "date >= '{$start}'";
-        endif;
-        if ($car) :
+        }
+        if ($car) {
             if ($terms) {
                 $terms .= ' AND ';
             }
             $terms .= "id_car = '{$car}'";
-        endif;
+        }
               
         return "SELECT r.id, r.id_car, c.registration_nb, r.released_fuel_qty, r.released_adblue_qty, r.released_ref_qty, r.date, r.type 
             FROM fuel_releases r
